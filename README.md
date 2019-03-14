@@ -14,7 +14,7 @@ This page is in the development stage. Detailed instructions and example files w
 
 
 ## Usage
-BioRT-Flux-PIHM is open source software licensed under the MIT License.
+BioRT-Flux-PIHM is an open-source software licensed under the MIT License.
 All bug reports and feature requests should be submitted using the [Issues](https://github.com/Wei-PSU/BioRT-Flux-PIHM/issues) page.
 
 ### Installing CVODE
