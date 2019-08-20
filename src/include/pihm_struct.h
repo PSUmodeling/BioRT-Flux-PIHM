@@ -100,9 +100,11 @@ typedef struct calib_struct
     double          rate;      // 02.12 rate constant
     double          ssa;       // 02.12 specific surface area
     double          gwinflux;  // 02.12 GW influx [mol/yr]
+    double          gwconc;     // 12.15 GW conc [mol/L]
     double          prcpconc;  // 02.12 precip conc 
     double          initconc;  // 02.12 initial conc 
     double          Xsorption; // 03.06 DOC sorption
+    double          volume_soilN; // 12.15 DOCscatter
 #if defined(_NOAH_)
     double          smcref;
     double          smcwlt;

@@ -203,9 +203,11 @@ typedef struct Chem_Data_structure
   double CalRate;            // 02.12 by Wei Zhi
   double CalSSA;             // 02.12 by Wei Zhi
   double CalGwinflux;        // 02.12 by Wei Zhi
+  double CalGwconc;          // 12.15 by Wei Zhi
   double CalPrcpconc;        // 02.12 by Wei Zhi
   double CalInitconc;        // 02.12 by Wei Zhi
   double CalXsorption;       // 03.06 by Wei Zhi
+  double CalVolume_soilN;    // 12.15 by Wei Zhi
   double ** Dependency;  /* a matrix that describe the dependency of secondary species on the primary species */
   double ** Dep_kinetic; /* a matrix that store the dependency of kinetic species on the primary species (sometimes conversion is required) */
   double ** Dep_kinetic_all; // same as above, for all possible kinetic species
