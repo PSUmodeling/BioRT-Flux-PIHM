@@ -1406,6 +1406,11 @@ void ReadCalib(const char *filename, calib_struct *cal)
     ReadKeyword(cmdstr, "gwinflux", &cal->gwinflux, 'd', filename, lno);
     printf( " cal->gwinflux = %f \n", cal->gwinflux);
     
+    // 12.16 by Wei Zhi
+    NextLine(global_calib, cmdstr, &lno);
+    ReadKeyword(cmdstr, "gwconc", &cal->gwconc, 'd', filename, lno);
+    printf( " cal->gwconc = %f \n", cal->gwconc);
+    
     NextLine(global_calib, cmdstr, &lno);
     ReadKeyword(cmdstr, "prcpconc", &cal->prcpconc, 'd', filename, lno);
     printf( " cal->prcpconc = %f \n", cal->prcpconc);
@@ -1418,6 +1423,11 @@ void ReadCalib(const char *filename, calib_struct *cal)
     NextLine(global_calib, cmdstr, &lno);
     ReadKeyword(cmdstr, "Xsorption", &cal->Xsorption, 'd', filename, lno);
     printf( " cal->Xsorption = %f \n", cal->Xsorption);
+    
+    // 12.16 by Wei Zhi
+    NextLine(global_calib, cmdstr, &lno);
+    ReadKeyword(cmdstr, "volume_soilN", &cal->volume_soilN, 'd', filename, lno);
+    printf( " cal->volume_soilN = %f \n", cal->volume_soilN);
 
     fclose(global_calib);
 }
