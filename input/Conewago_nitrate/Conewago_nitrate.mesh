@@ -1,0 +1,10 @@
+NUMELE	2					
+INDEX	NODE1	NODE2	NODE3	NABR1	NABR2	NABR3
+1	    1	    2	    4	    0	    2	    0
+2	    1	    4     3	    0     0     1
+NUMNODE	4					
+INDEX	X           	Y           	ZMIN    	ZMAX    		
+1		  10000         18000         350       351
+2		  2000          10000         350       351
+3     18000         10000         350       351
+4     10000         2000          85        86
