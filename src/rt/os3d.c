@@ -1,7 +1,6 @@
 /******************************************************************************
 * This subroutine is used to calculate the advection diffusion dispersion
 * It uses a similar OS3D scheme as detailed in Crunchflow user's manual.
-*
 *****************************************************************************/
 
 #include "pihm.h"  
@@ -16,20 +15,21 @@ void OS3D(realtype t, realtype stepsize, Chem_Data CD) {
 	double ** dconc = (double **)malloc(CD->NumOsv * sizeof(double*));
  
 	int i, j, k, jj, node_1, node_2, node_3, node_4, abnormalflg, nr_tmp;
-  int node_5_trib;   
+  int node_5_trib;  
 	double
 	flux_t, diff_flux, disp_flux, distance, temp_dconc, velocity,
 	temp_conc, inv_dist, diff_conc, unit_c, area, r_, beta_, var_height,
 	total_prep_mass, timelps, invavg, adpstep;
-  double flux_t_trib, temp_conc_trib, temp_dconc_trib;   
-	double * tmpconc = (double*)malloc(CD->NumSpc * sizeof(double));  
+  double flux_t_trib, temp_conc_trib, temp_dconc_trib; 
+	
+	double * tmpconc = (double*)malloc(CD->NumSpc * sizeof(double)); 
  
 	abnormalflg = 0;  
 	unit_c = 1.0 / 1440;
 	total_prep_mass = 0.0;
 
 
-// Initalize the allocated array
+	// Initalize the allocated array
 #ifdef _OPENMP
 #pragma omp parallel for   
 #endif 
@@ -41,7 +41,6 @@ void OS3D(realtype t, realtype stepsize, Chem_Data CD) {
 			dconc[i][j] = 0.0;
 	}
 
-
 	for (i = 0; i < CD->NumFac; i++)  
 	{
 		CD->Flux[i].q = 0.0;
@@ -51,7 +50,7 @@ void OS3D(realtype t, realtype stepsize, Chem_Data CD) {
 		node_4 = CD->Flux[i].nodell - 1;
     node_5_trib = CD->Flux[i].node_trib - 1;  
 		flux_t = -CD->Flux[i].flux;
-    flux_t_trib = -CD->Flux[i].flux_trib;     
+    flux_t_trib = -CD->Flux[i].flux_trib;  
 		distance = CD->Flux[i].distance;
 		velocity = -CD->Flux[i].velocity;         
 		area = CD->Flux[i].s_area;
@@ -80,7 +79,7 @@ void OS3D(realtype t, realtype stepsize, Chem_Data CD) {
 			temp_dconc = 0.0;
       temp_dconc_trib = 0.0;   
 			temp_conc = 0.0;
-      temp_conc_trib = 0.0;    
+      temp_conc_trib = 0.0;  
 
 			/* uses temp_conc to store the concentration at the surfaces */
 			/* uses temp_dconc to store the concentration changes at the cell */
@@ -91,7 +90,7 @@ void OS3D(realtype t, realtype stepsize, Chem_Data CD) {
         {
 					temp_conc = CD->Vcele[node_2].t_conc[j];
 				}
-				else              
+				else             
         {
 					temp_conc = CD->Vcele[node_1].t_conc[j];
 				}
@@ -99,7 +98,7 @@ void OS3D(realtype t, realtype stepsize, Chem_Data CD) {
         // add tributary
         if (flux_t_trib > 0)
           temp_conc_trib = CD->Vcele[node_5_trib].t_conc[j];
-        else  
+        else 
           temp_conc_trib = 0.0;  
 			}
       
@@ -141,17 +140,21 @@ void OS3D(realtype t, realtype stepsize, Chem_Data CD) {
         // add tributary
         if (flux_t_trib > 0)
           temp_conc_trib = CD->Vcele[node_5_trib].t_conc[j];
-        else  
+        else 
           temp_conc_trib = 0.0; 
 			}
       
+			// Flux[i].BC = 0 normal cell face
+			//            = 1 flux boundary
+			//            = 2 noflow boundary
 
 			if (CD->Flux[i].BC != 2)
       {
         // add tributary flux
-        temp_dconc += temp_conc * flux_t + temp_conc_trib * flux_t_trib;  
+				//temp_dconc += temp_conc * flux_t;
+        temp_dconc += temp_conc * flux_t + temp_conc_trib * flux_t_trib; 
       }
-    
+       
 			if (CD->Flux[i].BC == 0)
       {
 				temp_dconc -= diff_flux + disp_flux;
@@ -159,18 +162,7 @@ void OS3D(realtype t, realtype stepsize, Chem_Data CD) {
         
 			temp_dconc *= unit_c;
 			CD->Flux[i].q = temp_dconc;
-			dconc[node_1][j] += temp_dconc;  
-      
-			/*
-			if (( CD->Flux[i].nodeup == 1109) && (j == 2) && ((int)t % 1440 == 0)){
-			fprintf(stderr, "%s fromid %d, toid %d, flux: %f, velo: %f, dist: %f, vol:%f, conc: %f, sconc: %f, nconc: %f, adv_trans: %g, diff_trans: %g, s_area: %f\n",CD->chemtype[j].ChemName, CD->Flux[i].nodeup, CD->Flux[i].nodelo,  CD->Flux[i].flux, CD->Flux[i].velocity, CD->Flux[i].distance, CD->Vcele[CD->Flux[i].nodeup-1].vol, CD->Vcele[CD->Flux[i].nodeup-1].t_conc[j],temp_conc, CD->Vcele[CD->Flux[i].nodelo-1].t_conc[j], temp_conc * flux_t, - diff_flux  - disp_flux, CD->Flux[i].s_area);
-			}
-			if (( CD->Flux[i].nodeup == 58) && (j == 2) && ((int)t % 1440 == 0)){
-			fprintf(stderr, "%s fromid %d, toid %d, flux: %f, velo: %f, dist: %f, vol:%f, conc: %f, sconc: %f, nconc: %f, adv_trans: %g, diff_trans: %g, s_area: %f\n",CD->chemtype[j].ChemName, CD->Flux[i].nodeup, CD->Flux[i].nodelo,  CD->Flux[i].flux, CD->Flux[i].velocity, CD->Flux[i].distance, CD->Vcele[CD->Flux[i].nodeup-1].vol, CD->Vcele[CD->Flux[i].nodeup-1].t_conc[j],temp_conc, CD->Vcele[CD->Flux[i].nodelo-1].t_conc[j], temp_conc * flux_t, - diff_flux  - disp_flux, CD->Flux[i].s_area);
-			}
-			if (( CD->Flux[i].nodeup == 59) && (j == 2) && ((int)t % 1440 == 0)){
-			fprintf(stderr, "%s fromid %d, toid %d, flux: %f, velo: %f, dist: %f, vol:%f, conc: %f, sconc: %f, nconc: %f, adv_trans: %g, diff_trans: %g, s_area: %f\n",CD->chemtype[j].ChemName, CD->Flux[i].nodeup, CD->Flux[i].nodelo,  CD->Flux[i].flux, CD->Flux[i].velocity, CD->Flux[i].distance, CD->Vcele[CD->Flux[i].nodeup-1].vol, CD->Vcele[CD->Flux[i].nodeup-1].t_conc[j],temp_conc, CD->Vcele[CD->Flux[i].nodelo-1].t_conc[j], temp_conc * flux_t, - diff_flux  - disp_flux, CD->Flux[i].s_area);
-			}*/
+			dconc[node_1][j] += temp_dconc;
 		}
 	}
 
@@ -182,14 +174,15 @@ void OS3D(realtype t, realtype stepsize, Chem_Data CD) {
 		{
 			if ((CD->Vcele[i].rt_step < stepsize) && (CD->Vcele[i].height_t > 1.0E-3) && (CD->Vcele[i].height_o > 1.0E-3))
 			{
-
 				// use its intrinsic smaller step for small cells/ fast flowing cells ~= slow cells (in term of time marching).
 				if (i < 2 * CD->NumEle + CD->NumRiv - CD->RivOff) 
         {
 					timelps = t;
 					invavg = 1.0 / stepsize;
 					adpstep = CD->Vcele[i].rt_step;
+					//	  fprintf(stderr, " Local time step at cell %d is %f\n", CD->Vcele[i].index, CD->Vcele[i].rt_step);
 
+					//	  fprintf(stderr, " %d cell is flowing at AdptTime\n",i+1);
 					while (timelps < t + stepsize) 
           {
 						if (adpstep > t + stepsize - timelps) 
@@ -205,7 +198,7 @@ void OS3D(realtype t, realtype stepsize, Chem_Data CD) {
               {
 								if (CD->Vcele[i].q > 0.0)
                 {
-                    if (strcmp(CD->chemtype[j].ChemName, "'DOC'") == 0)  // 01.12 be careful
+                    if (strcmp(CD->chemtype[j].ChemName, "'DOC'") == 0)  
                     {
                       tmpconc[j] += CD->Precipitation.t_conc[j] * CD->Vcele[i].q * adpstep * unit_c * CD->Condensation * CD->CalPrcpconc;
                     }  
@@ -214,7 +207,7 @@ void OS3D(realtype t, realtype stepsize, Chem_Data CD) {
 									    tmpconc[j] += CD->Precipitation.t_conc[j] * CD->Vcele[i].q * adpstep * unit_c * CD->Condensation;
                     }           
                 }
-									tmpconc[j] += CD->Precipitation.t_conc[j] * CD->Vcele[i].q * adpstep * unit_c * CD->Condensation;
+
 								if (CD->Vcele[i].q < 0.0) 
                 {
 									tmpconc[j] += 0.0;  // n_0 design
@@ -255,9 +248,9 @@ void OS3D(realtype t, realtype stepsize, Chem_Data CD) {
 									node_2 = CD->Flux[k].nodelo - 1;
 									node_3 = CD->Flux[k].nodeuu - 1;
 									node_4 = CD->Flux[k].nodell - 1;
-                  node_5_trib = CD->Flux[i].node_trib - 1;  
+                  node_5_trib = CD->Flux[k].node_trib - 1;  
 									flux_t = -CD->Flux[k].flux;
-                  flux_t_trib = -CD->Flux[i].flux_trib;     
+                  flux_t_trib = -CD->Flux[i].flux_trib;   
 									distance = CD->Flux[k].distance;
 									velocity = -CD->Flux[k].velocity;
 									area = CD->Flux[k].s_area;
@@ -284,7 +277,7 @@ void OS3D(realtype t, realtype stepsize, Chem_Data CD) {
                     temp_dconc = 0.0;
                     temp_dconc_trib = 0.0;   
 			              temp_conc = 0.0;
-                    temp_conc_trib = 0.0;    
+                    temp_conc_trib = 0.0;  
 
 										if (CD->TVDFlg == 0) 
                     {
@@ -330,7 +323,7 @@ void OS3D(realtype t, realtype stepsize, Chem_Data CD) {
                       // add tributary
                       if (flux_t_trib > 0)
                         temp_conc_trib = CD->Vcele[node_5_trib].t_conc[j];
-                      else  
+                      else 
                         temp_conc_trib = 0.0;                                                                                                      
 										}
 
@@ -342,13 +335,14 @@ void OS3D(realtype t, realtype stepsize, Chem_Data CD) {
                       // add tributary
                       if (flux_t_trib > 0)
                         temp_conc_trib = CD->Vcele[node_5_trib].t_conc[j];
-                      else  
+                      else 
                         temp_conc_trib = 0.0;        
 										}
 
 										if (CD->Flux[k].BC != 2)
                     {                                                                    
-                      //  add tributary flux
+                      // add tributary flux
+				              //temp_dconc += temp_conc * flux_t;
                       temp_dconc += temp_conc * flux_t + temp_conc_trib * flux_t_trib; 
                     }
 										if (CD->Flux[k].BC == 0)
@@ -359,7 +353,6 @@ void OS3D(realtype t, realtype stepsize, Chem_Data CD) {
 										temp_dconc *= unit_c;
 										tmpconc[j] += temp_dconc;
 									}
-
 								}
 							}
 
@@ -376,6 +369,7 @@ void OS3D(realtype t, realtype stepsize, Chem_Data CD) {
 			}
 		}
 
+		// below section can not be deleted!
              
 		if ((CD->Vcele[i].height_t > 1.0E-3) && (CD->Vcele[i].height_o > 1.0E-3))
 		{
@@ -393,7 +387,7 @@ void OS3D(realtype t, realtype stepsize, Chem_Data CD) {
       
 			// For blocks with very small content, we just skip it.
       
-			if (CD->Vcele[i].BC != 2)  
+			if (CD->Vcele[i].BC != 2)   
       {
 				for (j = 0; j < CD->NumSpc; j++) 
         {
@@ -405,17 +399,16 @@ void OS3D(realtype t, realtype stepsize, Chem_Data CD) {
             {
               if (strcmp(CD->chemtype[j].ChemName, "'DOC'") == 0)
               {
-                tmpconc[j] += CD->Precipitation.t_conc[j] * CD->Vcele[i].q * adpstep * unit_c * CD->Condensation * CD->CalPrcpconc;
+                tmpconc[j] += CD->Precipitation.t_conc[j] * CD->Vcele[i].q * stepsize * unit_c * CD->Condensation * CD->CalPrcpconc;  
               }  
               else
               {
-		            tmpconc[j] += CD->Precipitation.t_conc[j] * CD->Vcele[i].q * adpstep * unit_c * CD->Condensation;
+		            tmpconc[j] += CD->Precipitation.t_conc[j] * CD->Vcele[i].q * stepsize * unit_c * CD->Condensation;   
               }
             }
 						if (CD->Vcele[i].q < 0.0) 
             {
-							//	      tmpconc[j] += 0.0;  // n_0 design
-							tmpconc[j] += CD->Vcele[i].t_conc[j] * CD->Vcele[i].q * stepsize * unit_c;
+							tmpconc[j] += 0.0; 
 						}
 					}
 					tmpconc[j] = tmpconc[j] / (CD->Vcele[i].porosity * CD->Vcele[i].vol);
@@ -439,14 +432,11 @@ void OS3D(realtype t, realtype stepsize, Chem_Data CD) {
 			}
 		}
 	}
-
-
+ 
 	for (i = 0; i < CD->NumOsv; i++)
 	{
 		free(dconc[i]);
 	}
-
 	free(dconc);
-
-	free(tmpconc);  
+	free(tmpconc); 
 }

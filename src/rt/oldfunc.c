@@ -77,7 +77,7 @@
 #define MINpsi	-70
 #define EPS 0.05
 #define THRESH 0.0
-#define UNIT_C 1440	 /* Note 60*24 for calculation of yDot in m/min units while forcing is in m/day. */
+#define UNIT_C 1440	/* Note 60*24 for calculation of yDot in m/min units while forcing is in m/day. */
 //#define GRAV 9.8*60*60	/* Note the dependence on physical units */  // 09.23 redefined "GRAV" in pihm_const.h
 
 
@@ -124,6 +124,7 @@ realtype CS_AreaOrPerem(int rivOrder, realtype rivDepth, realtype rivCoeff, real
 			return returnVal(rivArea, rivPerem, eq_Wid, a_pBool);
 		default:
 			printf("\n Relevant Values entered are wrong");
+			//	printf("\n Depth: %lf\tCoeff: %lf\tOrder: %d\t");
 			return 0;
 		}
 	}
