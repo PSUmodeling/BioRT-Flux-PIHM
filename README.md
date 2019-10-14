@@ -6,11 +6,11 @@ The BioRT module is developed based on the original RT-Flux-PIHM (Bao et al., 20
 This page is in the development stage. Detailed instructions and example files will be added over time. For now, readers are referred to Bao et al. (2017) for details of code structure, governing equations, and example runs, and to Li et al. (2017) for a particular application in the Susquehanna Shale Hills Critical Zone Observatory (SSHCZO), one of the 10 national CZOs in the United States, and to Zhi et al., (2019) for its application in Coal Creek, CO, a high-elevation mountaineous watershed in the central Rocky mountains.
 
 #### Reference:
+- **Zhi, W.**, Li L., Dong W., Brown W., Kaye J., Steefel C., Williams H. K. (2019). Distinct Source Water Chemistry Shapes Contrasting Concentration - Discharge Patterns. *Water Resources Research*, 55, 4233– 4251. doi: 10.1029/2018WR024257
+
 - **Bao, C**., Li, L., Shi, Y., and Duffy, C. (2017). Understanding watershed hydrogeochemistry: 1. Development of RT‐Flux‐PIHM. *Water       Resources Research*, 53(3), 2328-2345. doi: 10.1002/2016WR018935
 
 - **Li, L.**, Bao, C., Sullivan, P. L., Brantley, S., Shi, Y., and Duffy, C. (2017). Understanding watershed hydrogeochemistry: 2. Synchronized hydrological and geochemical processes drive stream chemostatic behavior. *Water Resources Research*, 53(3), 2346-2367. doi: 10.1002/2016wr018935
-
-- **Zhi, W.**, Li L., Dong W., Brown W., Kaye J., Steefel C., Williams H. K. (2019). Distinct Source Water Chemistry Shapes Contrasting Concentration - Discharge Patterns. *Water Resources Research*, under revision
 
 
 ## Usage
