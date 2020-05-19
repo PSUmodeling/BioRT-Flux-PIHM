@@ -1,14 +1,17 @@
 # BioRT-Flux-PIHM
 BioRT-Flux-PIHM is the watershed-scale biogeochemical reactive transport model of the PIHM family code MM-PIHM (https://github.com/PSUmodeling/MM-PIHM) for watershed processes. The model couples three modules: a multi-component bio-reactive transport module 'BioRT', the land-surface interaction module 'Flux' for processes such as solar radiation and evapotranspiration, and the surface hydrology module 'PIHM' for hydrological processes (e.g., precipitation, infiltration, recharge, surface runoff, subsurface interflow, and groundwater flow). The BioRT module takes in the calculated water fluxes and storages from Flux-PIHM and simulates processes including transport (advection, diffusion, and dispersion) and biogeochemical reactions. The reactions can be kinetics-controlled (e.g., mineral dissolution and precipitation and microbe-mediated reactions) and/or thermodynamically controlled (e.g., ion exchange, surface complexation (sorption), and aqueous complexation). The output is the aqueous and solid concentrations of interests. 
 
+
 The new version is developed based on the original RT-Flux-PIHM (Bao et al., 2017; Li et al., 2017), with expansions that include: 1) biotic processes including plant uptake, and microbe-mediated biogeochemical reactions that are relevant to the transformation of organic matter that involve carbon, nitrogen, and phosphorus; and 2) shallow and deep water partitioning to represent the surface and groundwater interactions, enabling the simulation of the “two water tables”. 
 
+
 The reactive transport part of the code has been verified against the widely used reactive transport benchmark code CrunchTope. The  model BioRT-Flux-PIHM has recently been applied to understand reactive transport processes in multiple watersheds across different climate, vegetation, and geology conditions. 
+
 
 This page is in the development stage. Detailed instructions and example files will be added over time. For now, readers are referred to Bao et al. (2017) for details of code structure, governing equations, and example runs, and to Li et al. (2017) and Wen et al. (2020) for particular applications in the Susquehanna Shale Hills Critical Zone Observatory (SSHCZO), one of the 10 national CZOs in the United States, and to Zhi et al., (2019) for its application in Coal Creek, CO, a high-elevation mountaineous watershed in the central Rocky mountains.
 
 #### Reference:
-- **Wen, Hang**, Perdrial, J., Bernal, S., Abbott, B.W., Dupas, R., Godsey, S.E., Harpold, A., Rizzo, D., Underwood, K., Adler, T., Gary S., and Li L. (2020). Temperature controls production but hydrology controls export of dissolved organic carbon at the catchment scale. *Hydrology and Earch System Sciencea*, 24, 945–966. doi: 10.5194/hess-24-945-2020 
+- **Wen, H.**, Perdrial, J., Bernal, S., Abbott, B.W., Dupas, R., Godsey, S.E., Harpold, A., Rizzo, D., Underwood, K., Adler, T., Gary S., and Li L. (2020). Temperature controls production but hydrology controls export of dissolved organic carbon at the catchment scale. *Hydrology and Earch System Sciencea*, 24, 945–966. doi: 10.5194/hess-24-945-2020 
 
 - **Zhi, W.**, Li, L., Dong, W., Brown, W., Kaye, J., Steefel, C., Williams, H. K. (2019). Distinct Source Water Chemistry Shapes Contrasting Concentration - Discharge Patterns. *Water Resources Research*, 55, 4233–4251. doi: 10.1029/2018WR024257
 
