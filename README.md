@@ -1,12 +1,9 @@
 # BioRT-Flux-PIHM
 BioRT-Flux-PIHM is the watershed-scale biogeochemical reactive transport model of the PIHM family code MM-PIHM (https://github.com/PSUmodeling/MM-PIHM) for watershed processes. The model couples three modules: a multi-component bio-reactive transport module 'BioRT', the land-surface interaction module 'Flux' for processes such as solar radiation and evapotranspiration, and the surface hydrology module 'PIHM' for hydrological processes (e.g., precipitation, infiltration, recharge, surface runoff, subsurface interflow, and groundwater flow). The BioRT module takes in the calculated water fluxes and storages from Flux-PIHM and simulates processes including transport (advection, diffusion, and dispersion) and biogeochemical reactions. The reactions can be kinetics-controlled (e.g., mineral dissolution and precipitation and microbe-mediated reactions) and/or thermodynamically controlled (e.g., ion exchange, surface complexation (sorption), and aqueous complexation). The output is the aqueous and solid concentrations of interests. 
 
-
-The new version is developed based on the original RT-Flux-PIHM (Bao et al., 2017; Li et al., 2017), with expansions that include: 1) biotic processes including plant uptake, and microbe-mediated biogeochemical reactions that are relevant to the transformation of organic matter that involve carbon, nitrogen, and phosphorus; and 2) shallow and deep water partitioning to represent the surface and groundwater interactions, enabling the simulation of the “two water tables”. 
-
+The new version is developed based on the original RT-Flux-PIHM (Bao et al., 2017; Li et al., 2017), with expansions that include: 1) biotic processes including plant uptake, and microbe-mediated biogeochemical reactions that are relevant to the transformation of organic matter that involve carbon, nitrogen, and phosphorus; and 2) shallow and deep water partitioning to represent the surface and groundwater interactions, enabling the simulation of the “two water tables”. The model can be set up and run in two modes: the spatially explicit mode (i.e., a complex domain of hundreds of grids) vs. the spatially implicit mode (i.e., the two-grid model that has two land cells representing two hillslopes connected by one river cell). The spatially explicit mode includes details of topography, land cover, and soil/geology properties. It can be used to understand the impacts of spatial structure and identify hot spots of biogeochemical reactions. The spatially implicit mode focuses on processes and average behavior of a watershed. It requires less spatial data, is computationally inexpensive, and is relatively easy to set up.
 
 The reactive transport part of the code has been verified against the widely used reactive transport benchmark code CrunchTope. The  model BioRT-Flux-PIHM has recently been applied to understand reactive transport processes in multiple watersheds across different climate, vegetation, and geology conditions. 
-
 
 This page is in the development stage. Detailed instructions and example files will be added over time. For now, readers are referred to Bao et al. (2017) for details of code structure, governing equations, and example runs, and to Li et al. (2017) and Wen et al. (2020) for particular applications in the Susquehanna Shale Hills Critical Zone Observatory (SSHCZO), one of the 10 national CZOs in the United States, and to Zhi et al., (2019) for its application in Coal Creek, CO, a high-elevation mountaineous watershed in the central Rocky mountains.
 
@@ -25,7 +22,6 @@ BioRT-Flux-PIHM is an open-source software licensed under the MIT License.
 All bug reports and feature requests should be submitted using the [Issues](https://github.com/Wei-PSU/BioRT-Flux-PIHM/issues) page.
 
 ### Installing CVODE
-
 MM-PIHM uses the SUNDIALS CVODE v2.9.0 implicit solvers. 
 The CVODE Version 2.9.0 source code is provided with the MM-PIHM package for users' convenience. 
 SUNDIALS (©️2012--2016) is copyrighted software produced at the Lawrence Livermore National Laboratory. A SUNDIALS copyright note can be found in the cvode directory.
@@ -43,10 +39,22 @@ If CMake is not available on your system, the CMake Version 3.7.2 binary for Lin
 
 ### Installing BioRT-Flux-PIHM
 
-Once CVODE is installed, you can compile BioRT-Flux-PIHM by doing
+Once CVODE is installed, you can compile the spatially explicit mode:
 
 ```shell
 $ make biort-flux-pihm
+```
+
+Or if you choose the two-grid mode (TGM) :
+
+```shell
+$ make TGM=on biort-flux-pihm
+```
+
+With the deep groundwater (DGW) module:
+
+```shell
+$ make DGW=on biort-flux-pihm
 ```
 
 The command
