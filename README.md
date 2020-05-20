@@ -16,6 +16,7 @@ This page is in the development stage. Detailed instructions and example files w
 
 - **Li, L.**, Bao, C., Sullivan, P. L., Brantley, S., Shi, Y., and Duffy, C. (2017). Understanding watershed hydrogeochemistry: 2. Synchronized hydrological and geochemical processes drive stream chemostatic behavior. *Water Resources Research*, 53(3), 2346-2367. doi: 10.1002/2016wr018935
 
+
 ----------------------------------------------------------------------------------------------------------------------------------------
 ## Usage
 BioRT-Flux-PIHM is an open-source software licensed under the MIT License.
@@ -36,6 +37,7 @@ in your BioRT-Flux-PIHM directory.
 
 Currently CMake (version 2.8.1 or higher) is the only supported method of CVODE installation.
 If CMake is not available on your system, the CMake Version 3.7.2 binary for Linux (or Mac OS, depending on your OS) will be downloaded from [http://www.cmake.org](http://www.cmake.org) automatically when you choose to `make cvode`.
+
 
 ### Installing BioRT-Flux-PIHM
 
@@ -67,7 +69,7 @@ will clean the executables and object files.
 
 A help message will appear if you run `make`.
 
-----------------------------------------------------------------------------------------------------------------------------------------
+
 ### Running BioRT-Flux-PIHM
 
 #### Setting up OpenMP environment
