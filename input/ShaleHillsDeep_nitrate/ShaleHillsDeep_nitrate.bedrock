@@ -1,0 +1,15 @@
+INDEX   BC1     BC2     BC3
+1       0       0       0
+2       0       0       0
+
+INDEX   ZBED
+1       240.000
+2       239.500
+3       271.000
+4       282.000
+
+FBRUNSAT        DAILY
+FBRGW           DAILY
+FBRINFIL        DAILY
+FBRRECHG        DAILY
+FBRFLOW         DAILY

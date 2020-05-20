@@ -1,0 +1,31 @@
+ELEM    PRCPC   UNSAT   GW      FBR_UNSAT   FBR_GW
+1       1       1       1       2           2
+2       1       1       1       2           2
+
+
+Condition sGW
+# concentrations and names of species of condition X.
+# recommanded order: aqueous primary, adsorption, cation exchange, mineral
+pH	         4.56
+NO3          1.0E-5
+C5H7O2N      1.00E-10
+N(soil)      1.00E-10
+N(plant)     1.00E-10
+soilN        0.02       -ssa    5.0
+soilDN       0.003      -ssa    5.0
+plantN       0.02       -ssa    5.0
+C5H7O2N(s)   0.0004     -ssa    5.0
+
+
+Condition dGW
+# concentrations and names of species of condition X.
+# recommanded order: aqueous primary, adsorption, cation exchange, mineral
+pH	         4.56
+NO3          1.0E-5
+C5H7O2N      1.00E-10
+N(soil)      1.00E-10
+N(plant)     1.00E-10
+soilN        0.000002    -ssa    5.0
+soilDN       0.0000004   -ssa    5.0
+plantN       0.000002    -ssa    5.0
+C5H7O2N(s)   0.0004      -ssa    5.0

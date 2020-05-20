@@ -1,0 +1,12 @@
+NUMSOIL     5
+INDEX   SILT    CLAY    OM      BD      KINF        KSATV       KSATH       MAXSMC  MINSMC  ALPHA   BETA    MACHF   MACVF   DMAC    QTZ
+1       40.10   15.03   3.89    1.24    9.7218E-5   1.721E-5    1.589E-5    0.3848  0.05    8.18    1.24    0.01    0.01    1.0     0.25
+2       40.10   15.03   3.89    1.24    9.7218E-5   1.721E-5    1.589E-5    0.3848  0.05    8.18    1.24    0.01    0.01    1.0     0.25
+3       40.10   15.03   3.89    1.24    9.7218E-5   1.721E-5    1.589E-5    0.3848  0.05    8.18    1.24    0.01    0.01    1.0     0.25
+4       40.10   15.03   3.89    1.24    9.7218E-5   1.721E-5    1.589E-5    0.3848  0.05    8.18    1.24    0.01    0.01    1.0     0.25
+5       40.10   15.03   3.89    1.24    9.7218E-5   1.721E-5    1.589E-5    0.3848  0.05    8.18    1.24    0.01    0.01    1.0     0.25
+DINF        0.10
+KMACV_RO    100.0
+KMACH_RO    1000.0
+
+# If data are not available, KINF, KSATV, KSATH, MAXSMC, MINSMC, ALPHA, BETA, and QTZ values can be -999, in which case, pedotransfer functions will be used to calculate those properties from soil texture.

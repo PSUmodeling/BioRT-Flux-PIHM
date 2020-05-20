@@ -1,0 +1,11 @@
+NUMRIV  1
+INDEX   FROM    TO      DOWN    LEFT    RIGHT   SHAPE   MATL    BC      RES
+1       1       2       -3      1       2       1       1       0       0
+SHAPE   1
+INDEX   DPTH    OINT    CWID
+1       0.1     1       1.5
+MATERIAL    1
+INDEX   ROUGH   CWR     KH          KV          BEDTHCK
+1       0.04    0.6     6.962E-5    3.705E-5    0.11
+BC      0
+RES     0

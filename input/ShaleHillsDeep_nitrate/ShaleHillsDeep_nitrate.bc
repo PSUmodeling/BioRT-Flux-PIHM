@@ -1,0 +1,5 @@
+BC_TS       1       TYPE        1       # 1 = Dirichlet, 2 = Neumann
+TIME                HEAD        pH      NO3       C5H7O2N     soilN   soilDN    plantN   C5H7O2N(s)
+TS                  m
+2008-01-01 00:00    270.00      4.56    0.65E-5    1.00E-10    0.02    0.02     0.02     0.0004
+2012-07-31 00:00    270.00      4.56    0.65E-5    1.00E-10    0.02    0.02     0.02     0.0004

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libsundials_sunnonlinsolnewton.a  CMakeFiles/sundials_sunnonlinsolnewton_static.dir/sunnonlinsol_newton.c.o CMakeFiles/sundials_sunnonlinsolnewton_static.dir/__/__/sundials/sundials_math.c.o CMakeFiles/sundials_sunnonlinsolnewton_static.dir/__/__/sundials/sundials_nvector.c.o CMakeFiles/sundials_sunnonlinsolnewton_static.dir/__/__/sundials/sundials_nvector_senswrapper.c.o CMakeFiles/sundials_sunnonlinsolnewton_static.dir/__/__/sundials/sundials_nonlinearsolver.c.o
+/usr/bin/ranlib libsundials_sunnonlinsolnewton.a
