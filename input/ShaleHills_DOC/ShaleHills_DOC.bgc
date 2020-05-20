@@ -1,0 +1,52 @@
+RESTART         (keyword) start of restart control block
+0               (flag)    1 = read restart file     0 = don't read restart file
+0               (flag)    1 = write restart file    0 = don't write restart file
+
+TIME_DEFINE     (keyword - do not remove)
+1               (flag)    0 = native dynamics spin-up    1 = modified accelerated decomposition spin-up
+
+CO2_CONTROL     (keyword - do not remove)
+1               (flag)    0=constant 1=vary with file
+386.28          (ppm)     constant atmospheric CO2 concentration
+input/co2.txt   (file)    annual variable CO2 filename
+
+NDEP_CONTROL    (keyword - do not remove)
+0               (flag)    0=constant, 1=vary with file
+0.00075         (kgN/m2/yr) wet+dry atmospheric deposition of N
+0.0             (kgN/m2/yr) symbiotic+asymbiotic fixation of N
+input/ndep.txt  (file)    annual variable N filename
+
+C_STATE         (keyword) start of carbon state variable initialization block
+0.001           (kgC/m2)  first-year maximum leaf carbon
+0.0             (kgC/m2)  first-year maximum stem carbon
+0.0             (kgC/m2)  coarse woody debris carbon
+0.0             (kgC/m2)  litter carbon, labile pool
+0.0             (kgC/m2)  litter carbon, unshielded cellulose pool
+0.0             (kgC/m2)  litter carbon, shielded cellulose pool
+0.0             (kgC/m2)  litter carbon, lignin pool
+0.0             (kgC/m2)  soil carbon, fast microbial recycling pool
+0.0             (kgC/m2)  soil carbon, medium microbial recycling pool
+0.0             (kgC/m2)  soil carbon, slow microbial recycling pool
+0.0             (kgC/m2)  soil carbon, recalcitrant SOM (slowest)
+
+N_STATE         (keyword) start of nitrogen state variable initialization block
+0.0             (kgN/m2)  litter nitrogen, labile pool
+0.0             (kgN/m2)  soil nitrogen, mineral pool
+
+OUTPUT_CONTROL  (keyword)
+LAI             DAILY
+NPP             DAILY
+NEP             DAILY
+NEE             DAILY
+GPP             DAILY
+MR              DAILY
+GR              DAILY
+HR              DAILY
+FIRE            DAILY
+LITFALLC        DAILY
+VEGC            DAILY
+AGC             DAILY
+LITRC           DAILY
+SOILC           DAILY
+TOTALC          DAILY
+SMINN           DAILY
