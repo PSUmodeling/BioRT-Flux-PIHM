@@ -1,2 +1,0 @@
-/usr/bin/ar qc libsundials_sunlinsolband.a  CMakeFiles/sundials_sunlinsolband_static.dir/sunlinsol_band.c.o CMakeFiles/sundials_sunlinsolband_static.dir/__/__/sundials/sundials_linearsolver.c.o CMakeFiles/sundials_sunlinsolband_static.dir/__/__/sundials/sundials_band.c.o
-/usr/bin/ranlib libsundials_sunlinsolband.a

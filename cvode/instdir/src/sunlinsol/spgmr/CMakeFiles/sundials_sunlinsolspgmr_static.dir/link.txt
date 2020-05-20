@@ -1,2 +1,0 @@
-/usr/bin/ar qc libsundials_sunlinsolspgmr.a  CMakeFiles/sundials_sunlinsolspgmr_static.dir/sunlinsol_spgmr.c.o CMakeFiles/sundials_sunlinsolspgmr_static.dir/__/__/sundials/sundials_math.c.o CMakeFiles/sundials_sunlinsolspgmr_static.dir/__/__/sundials/sundials_nvector.c.o CMakeFiles/sundials_sunlinsolspgmr_static.dir/__/__/sundials/sundials_linearsolver.c.o CMakeFiles/sundials_sunlinsolspgmr_static.dir/__/__/sundials/sundials_iterative.c.o
-/usr/bin/ranlib libsundials_sunlinsolspgmr.a
