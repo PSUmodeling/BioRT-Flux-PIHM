@@ -16,7 +16,7 @@ This page is in the development stage. Detailed instructions and example files w
 
 - **Li, L.**, Bao, C., Sullivan, P. L., Brantley, S., Shi, Y., and Duffy, C. (2017). Understanding watershed hydrogeochemistry: 2. Synchronized hydrological and geochemical processes drive stream chemostatic behavior. *Water Resources Research*, 53(3), 2346-2367. doi: 10.1002/2016wr018935
 
-
+----------------------------------------------------------------------------------------------------------------------------------------
 ## Usage
 BioRT-Flux-PIHM is an open-source software licensed under the MIT License.
 All bug reports and feature requests should be submitted using the [Issues](https://github.com/Wei-PSU/BioRT-Flux-PIHM/issues) page.
@@ -67,7 +67,7 @@ will clean the executables and object files.
 
 A help message will appear if you run `make`.
 
-
+----------------------------------------------------------------------------------------------------------------------------------------
 ### Running BioRT-Flux-PIHM
 
 #### Setting up OpenMP environment
