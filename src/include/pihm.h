@@ -6,54 +6,49 @@
 #include <math.h>
 #include <string.h>
 #include <time.h>
-#include <sys/stat.h>
 #include <errno.h>
-#include <ctype.h>
+#include <stdarg.h>
+#include <sys/stat.h>
 #if defined(_WIN32) || defined(_WIN64)
+# include <windows.h>
 # include <direct.h>
 # include <io.h>
 #else
 # include <unistd.h>
 #endif
-#include <stdarg.h>
 #if defined(_OPENMP)
 # include <omp.h>
 #endif
 
-#define VERSION    "0.7.1-alpha"
+#define VERSION    "0.14.4-alpha"
 
 /*
  * SUNDIAL Header Files
  */
-/* CVODE header file */
-#include "cvode.h"
+/* Prototypes for CVODE fcts., consts. */
+#include "cvode/cvode.h"
 
-/* CVSPGMR linear header file */
-#include "cvode_spgmr.h"
+/* Access to SPGMR SUNLinearSolver */
+#include "sunlinsol/sunlinsol_spgmr.h"
 
-/* Definition of type N_Vector */
+/* Access to N_Vector */
 #if defined(_CVODE_OMP)
-# include "nvector_openmp.h"
+# include "nvector/nvector_openmp.h"
 #else
-# include "nvector_serial.h"
+# include "nvector/nvector_serial.h"
 #endif
 
-/* UnitRoundoff, RSqrt, SQR functions */
-#include "sundials_math.h"
+/* Definition of macros SUNSQR and EXP */
+#include "sundials/sundials_math.h"
 
-/* CVDENSE header file */
-#include "cvode_dense.h"
-
-// 12.30 for RT use
-#include "sundials_types.h"   // 12.30 for RT use
-#include "sundials_dense.h"   // 12.30 for RT use
+/* Prototypes for small dense fcts. */
+#include "sundials/sundials_dense.h"
 
 #if defined(_NOAH_)
 # include "spa.h"
-# include "rt.h"              // 12.30 for RT use
-# include <assert.h>          // 12.30 for RT use
-# include "oldpihm.h"         // 12.30 for RT use
 #endif
+
+#include "custom_io.h"
 
 #include "pihm_const.h"
 #include "pihm_input_struct.h"
@@ -61,4 +56,5 @@
 #include "river_struct.h"
 #include "pihm_struct.h"
 #include "pihm_func.h"
+
 #endif

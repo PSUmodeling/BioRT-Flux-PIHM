@@ -1,6 +1,6 @@
 #include "pihm.h"
 
-void DailyVar(int t, int start_time, elem_struct *elem, double dt)
+void DailyVar(int t, int start_time, elem_struct *elem)
 {
     int             i;
 
@@ -20,9 +20,6 @@ void DailyVar(int t, int start_time, elem_struct *elem, double dt)
             elem[i].daily.tmax : elem[i].es.sfctmp;
         elem[i].daily.tmin = (elem[i].daily.tmin < elem[i].es.sfctmp) ?
             elem[i].daily.tmin : elem[i].es.sfctmp;
-
-        /* Wind speed */
-        elem[i].daily.avg_sfcspd += elem[i].ps.sfcspd;
 
         /* Soil moisture, temperature, and ET */
         for (k = 0; k < elem[i].ps.nsoil; k++)
@@ -48,7 +45,6 @@ void DailyVar(int t, int start_time, elem_struct *elem, double dt)
             elem[i].daily.avg_sfcprs += elem[i].ps.sfcprs;
             elem[i].daily.avg_albedo += elem[i].ps.albedo;
             elem[i].daily.avg_soldn += elem[i].ef.soldn;
-            elem[i].daily.solar_total += elem[i].ef.soldn * dt;
             (elem[i].daily.daylight_counter)++;
         }
         else
@@ -71,8 +67,6 @@ void DailyVar(int t, int start_time, elem_struct *elem, double dt)
 
             elem[i].daily.avg_sfctmp /= (double)elem[i].daily.counter;
 
-            elem[i].daily.avg_sfcspd /= (double)elem[i].daily.counter;
-
             for (k = 0; k < elem[i].ps.nsoil; k++)
             {
                 elem[i].daily.avg_stc[k] /= (double)elem[i].daily.counter;
@@ -93,7 +87,11 @@ void DailyVar(int t, int start_time, elem_struct *elem, double dt)
             elem[i].daily.avg_rc /= (double)elem[i].daily.daylight_counter;
             elem[i].daily.avg_sfcprs /= (double)elem[i].daily.daylight_counter;
             elem[i].daily.avg_albedo /= (double)elem[i].daily.daylight_counter;
+#if defined(_CYCLES_)
+            elem[i].daily.avg_soldn /= (double)elem[i].daily.counter;
+#else
             elem[i].daily.avg_soldn /= (double)elem[i].daily.daylight_counter;
+#endif
 
             elem[i].daily.tnight /= (double)(elem[i].daily.counter -
                 elem[i].daily.daylight_counter);
@@ -110,11 +108,9 @@ void DailyVar(int t, int start_time, elem_struct *elem, double dt)
             elem[LUMPED].daily.tmin += elem[i].daily.tmin * elem[i].topo.area;
             elem[LUMPED].daily.avg_sfctmp +=
                 elem[i].daily.avg_sfctmp * elem[i].topo.area;
-            elem[LUMPED].daily.avg_sfcspd +=
-                elem[i].daily.avg_sfcspd * elem[i].topo.area;
             /* When running lumped model, only average root zone to avoid uneven
              * layers */
-            for (k = 0; k < elem[i].ps.nroot; k++)
+            for (k = 0; k < elem[i].ps.nsoil; k++)
             {
                 elem[LUMPED].daily.avg_stc[k] +=
                     elem[i].daily.avg_stc[k] * elem[i].topo.area;
@@ -145,10 +141,9 @@ void DailyVar(int t, int start_time, elem_struct *elem, double dt)
         elem[LUMPED].daily.tmax /= elem[LUMPED].topo.area;
         elem[LUMPED].daily.tmin /= elem[LUMPED].topo.area;
         elem[LUMPED].daily.avg_sfctmp /= elem[LUMPED].topo.area;
-        elem[LUMPED].daily.avg_sfcspd /= elem[LUMPED].topo.area;
         /* When running lumped model, only average root zone to avoid uneven
          * layers */
-        for (k = 0; k < elem[LUMPED].ps.nroot; k++)
+        for (k = 0; k < elem[LUMPED].ps.nsoil; k++)
         {
             elem[LUMPED].daily.avg_stc[k] /= elem[LUMPED].topo.area;
             elem[LUMPED].daily.avg_sh2o[k] /= elem[LUMPED].topo.area;
@@ -189,8 +184,10 @@ void InitDailyStruct(elem_struct *elem)
         {
             elem[i].daily.avg_sh2o[k] = 0.0;
             elem[i].daily.avg_smc[k] = 0.0;
-            elem[i].daily.avg_et[k] = 0.0;
             elem[i].daily.avg_stc[k] = 0.0;
+#if defined(_CYCLES_)
+            elem[i].daily.avg_et[k] = 0.0;
+#endif
         }
 
         elem[i].daily.avg_q2d = 0.0;
@@ -198,8 +195,9 @@ void InitDailyStruct(elem_struct *elem)
         elem[i].daily.avg_ch = 0.0;
         elem[i].daily.avg_rc = 0.0;
         elem[i].daily.avg_albedo = 0.0;
-        elem[i].daily.avg_sfcspd = 0.0;
+#if defined(_CYCLES_)
         elem[i].daily.avg_sncovr = 0.0;
+#endif
 
         elem[i].daily.tmax = -999.0;
         elem[i].daily.tmin = 999.0;
@@ -208,6 +206,13 @@ void InitDailyStruct(elem_struct *elem)
         elem[i].daily.tnight = 0.0;
 
         elem[i].daily.avg_soldn = 0.0;
-        elem[i].daily.solar_total = 0.0;
+
+#if defined(_CYCLES_)
+        for (k = 0; k < MAXCROP && '\0' != elem[i].crop[k].epc->cropn[0]; k++)
+        {
+            elem[i].crop[k].cwf.transp = 0.0;
+            elem[i].crop[k].cwf.transp_pot = 0.0;
+        }
+#endif
     }
 }

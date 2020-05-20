@@ -4,205 +4,172 @@
 /* Element attribute */
 typedef struct attrib_struct
 {
-    int             soil_type;              /* element soil type */
-#if defined(_FBR_)
-    int             geol_type;              /* element geology type */
+    int             soil_type;              /* soil type */
+    int             lc_type;                /* land cover type */
+    int             bc_type[NUM_EDGE];      /* boundary condition type*/
+    int             meteo_type;             /* meteorological forcing type */
+    int             lai_type;               /* leaf area index forcing type */
+#if defined(_CYCLES_)
+    int             op_type;
 #endif
-    int             lc_type;                /* element land cover type */
-    int             bc_type[NUM_EDGE];      /* element boundary condition type
-                                             */
 #if defined(_FBR_)
-    int             fbrbc_type[NUM_EDGE];   /* element fractured bedrock layer
+    int             geol_type;              /* geology type */
+    int             fbrbc_type[NUM_EDGE];   /* fractured bedrock layer
                                              * boundary condition type */
 #endif
-    int             meteo_type;             /* element meteorological forcing
+#if defined(_RT_)
+    int             prcpc_type;             /* element precipitation
+                                             * concentration type */
+    int             chem_ic_type[4];        /* element chemical concentration
                                              * type */
-    int             lai_type;               /* element leaf area index forcing
-                                             * type */
+#endif
 } attrib_struct;
 
 /* Topography parameters */
 typedef struct topo_struct
 {
-    double          area;                  /* area of element (m2) */
-    double          x;                     /* x of centroid (m) */
-    double          y;                     /* y of centroid (m) */
-    double          zmin;                  /* soil bottom elevation (m) */
-    double          zmax;                  /* surface elevation (m) */
+    double          area;                   /* area of element (m2) */
+    double          x;                      /* x of centroid (m) */
+    double          y;                      /* y of centroid (m) */
+    double          zmin;                   /* soil bottom elevation (m) */
+    double          zmax;                   /* surface elevation (m) */
+    double          edge[NUM_EDGE];         /* length of edge (Edge i is from
+                                             * node i - 1 to node i + 1) (m) */
+    double          nabrdist[NUM_EDGE];     /* distance to neighbor (m) */
+    double          nabr_x[NUM_EDGE];       /* x of neighbor centroid (m) */
+    double          nabr_y[NUM_EDGE];       /* y of neighbor centroid (m) */
 #if defined(_FBR_)
-    double          zbed;                  /* impermeable bedrock elevation (m)
-                                            */
+    double          zbed;                   /* impermeable bedrock elevation (m)
+                                             */
 #endif
-    double          edge[NUM_EDGE];        /* length of edge (Edge i is from
-                                            * node i to node i + 1) (m) */
-    double          nabrdist[NUM_EDGE];    /* distance to neighbor (m) */
-    double          nabr_x[NUM_EDGE];      /* x of neighbor centroid (m) */
-    double          nabr_y[NUM_EDGE];      /* y of neighbor centroid (m) */
 #if defined(_NOAH_)
-    double          slope;                 /* slope of element (degree) */
-    double          aspect;                /* surface aspect of element (degree)
-                                            */
-    double          svf;                   /* sky view factor (-) */
-    double          h_phi[36];             /* unobstructed angle in each
-                                            * direction (degree) */
-#endif
-#if defined(_RT_)
-    double          areasub[NUM_EDGE];
+    double          slope;                  /* slope of element (degree) */
+    double          aspect;                 /* surface aspect of element (degree)
+                                             */
+    double          svf;                    /* sky view factor (-) */
+    double          h_phi[36];              /* unobstructed angle in each
+                                             * direction (degree) */
 #endif
 } topo_struct;
 
 /* Soil parameters */
 typedef struct soil_struct
 {
-    double          depth;       /* soil depth (m) */
-    double          ksath;       /* horizontal saturated hydraulic conductivity
-                                  * (m s-1) */
-    double          ksatv;       /* vertical saturated hydraulic conductivity
-                                  * (m s-1) */
-    double          kinfv;       /* saturated infiltration conductivity (m s-1)
-                                  */
-    double          dinf;        /* depth from ground surface across which head
-                                  * gradient is calculated for infiltration (m)
-                                  */
-    double          alpha;       /* alpha from van Genuchten eqn (m-1) */
-    double          beta;        /* beta (n) from van Genuchten eqn (-) */
-    double          porosity;    /* soil porosity (m3 m-3) */
-    double          smcmax;      /* maximum soil moisture content (m3 m-3) */
-    double          smcmin;      /* residual soil moisture content (m3 m-3) */
-    double          smcwlt;      /* wilting point (m3 m-3) */
-    double          smcref;      /* soil moisture threshold where transpiration
-                                  * begins to stress (m3 m-3) */
-    double          dmac;        /* macropore depth (m) */
-    double          kmach;       /* macropore horizontal saturated hydraulic
-                                  * conductivity (m s-1) */
-    double          kmacv;       /* macropore vertical saturated hydraulic
-                                  * conductivity (m s-1) */
-    double          areafv;      /* macropore area fraction on a vertical cross-
-                                  * section (m2 m-2) */
-    double          areafh;      /* macropore area fraction on a horizontal
-                                  * cross-section (m2 m-2) */
-#if defined(_NOAH_)
-    double          csoil;       /* soil heat capacity (J m-3 K-1) */
-    double          quartz;      /* soil quartz content (-) */
-    double          smcdry;      /* dry soil moisture threshold where direct
-                                  * evap from top layer ends (m3 m-3) */
-#endif
+    double          depth;                  /* soil depth (m) */
+    double          ksath;                  /* horizontal saturated hydraulic
+                                             * conductivity (m s-1) */
+    double          ksatv;                  /* vertical saturated hydraulic
+                                             * conductivity (m s-1) */
+    double          kinfv;                  /* saturated infiltration
+                                             * conductivity (m s-1) */
+    double          dinf;                   /* depth from ground surface across
+                                             * which head gradient is calculated
+                                             * for infiltration (m) */
+    double          alpha;                  /* alpha from van Genuchten equation
+                                             * (m-1) */
+    double          beta;                   /* beta (n) from van Genuchten
+                                             * equation (-) */
+    double          porosity;               /* soil porosity (m3 m-3) */
+    double          smcmax;                 /* maximum soil moisture content
+                                             * (m3 m-3) */
+    double          smcmin;                 /* residual soil moisture content
+                                             * (m3 m-3) */
+    double          smcwlt;                 /* wilting point (m3 m-3) */
+    double          smcref;                 /* soil moisture threshold where
+                                             * transpiration begins to stress
+                                             * (m3 m-3) */
+    double          dmac;                   /* macropore depth (m) */
+    double          kmach;                  /* macropore horizontal saturated
+                                             * hydraulic conductivity (m s-1) */
+    double          kmacv;                  /* macropore vertical saturated
+                                             * hydraulic conductivity (m s-1) */
+    double          areafv;                 /* macropore area fraction on a
+                                             * vertical cross-section (m2 m-2)*/
+    double          areafh;                 /* macropore area fraction on a
+                                             * horizontal cross-section (m2 m-2)
+                                             */
 #if defined(_CYCLES_)
-    int             totalLayers;
-    double          Curve_Number;
-    double          Percent_Slope;
-    double          annualTemperaturePhase;
-    double          dampingDepth;
-    double          cumulativeDepth[MAXLYR];
-    double          nodeDepth[MAXLYR + 1];
-    double          layerThickness[MAXLYR];
-    double          Clay[MAXLYR];
-    double          Sand[MAXLYR];
-    double          IOM[MAXLYR];
-    double          NO3[MAXLYR];
-    double          NH4[MAXLYR];
-    double          BD[MAXLYR];
-    double          FC[MAXLYR];
-    double          PWP[MAXLYR];
-    double          Porosity[MAXLYR];
-    double          PAW[MAXLYR];
-    double          n2o[MAXLYR];
-    double          SOC_Conc[MAXLYR];
-    double          SOC_Mass[MAXLYR];
-    double          SON_Mass[MAXLYR];
-    double          MBC_Mass[MAXLYR];
-    double          MBN_Mass[MAXLYR];
-    double          SOCProfile;
-    double          SONProfile;
-    double          C_Humified;
-    double          C_ResidueRespired;
-    double          C_SoilRespired;
-    double          soilTemperature[MAXLYR];
-    double          waterContent[MAXLYR];
-    double          waterUptake[MAXLYR];
-    double          pH[MAXLYR];
-    double          latflux[MAXLYR];
-    double          evaporationVol;
-    double          residueEvaporationVol;
-    double          infiltrationVol;
-    double          runoffVol;
-    double          irrigationVol;
-    double          drainageVol;
-    double          NO3Leaching[NUM_EDGE];
-    double          NH4Leaching[NUM_EDGE];
-    double          NO3Profile;
-    double          NH4Profile;
-    double          N_Immobilization;
-    double          N_Mineralization;
-    double          N_NetMineralization;
-    double          NH4_Nitrification;
-    double          N2O_Nitrification;
-    double          NO3_Denitrification;
-    double          N2O_Denitrification;
-    double          NH4_Volatilization;
-    double          Rock[MAXLYR];
+    double          clay[MAXLYR];
+    double          sand[MAXLYR];
+    double          iom[MAXLYR];
+    double          bd[MAXLYR];
+#endif
+#if defined(_NOAH_)
+    double          csoil;                  /* soil heat capacity (J m-3 K-1) */
+    double          quartz;                 /* soil quartz content (-) */
+    double          smcdry;                 /* dry soil moisture threshold where
+                                             * direct evaporation from top layer
+                                             * ends (m3 m-3) */
 #endif
 } soil_struct;
 
 /* Fractured bedrock layer parameters */
 typedef struct geol_struct
 {
-    double          depth;       /* soil depth (m) */
-    double          ksath;       /* horizontal saturated hydraulic conductivity
-                                  * (m s-1) */
-    double          ksatv;       /* vertical saturated hydraulic conductivity
-                                  * (m s-1) */
-    double          alpha;       /* alpha from van Genuchten eqn (m-1) */
-    double          beta;        /* beta (n) from van Genuchten eqn (-) */
-    double          porosity;    /* porosity (m3 m-3) */
-    double          smcmax;      /* maximum moisture content (m3 m-3) */
-    double          smcmin;      /* residual moisture content (m3 m-3) */
+    double          depth;                  /* bedrock layer depth (m) */
+    double          ksath;                  /* horizontal saturated hydraulic
+                                             * conductivity (m s-1) */
+    double          ksatv;                  /* vertical saturated hydraulic
+                                             * conductivity (m s-1) */
+    double          alpha;                  /* alpha from van Genuchten equation
+                                             * (m-1) */
+    double          beta;                   /* beta (n) from van Genuchten
+                                             * equation (-) */
+    double          porosity;               /* porosity (m3 m-3) */
+    double          smcmax;                 /* maximum moisture content (m3 m-3)
+                                             */
+    double          smcmin;                 /* residual moisture content
+                                             * (m3 m-3) */
 } geol_struct;
 
 /* Land cover parameters */
 typedef struct lc_struct
 {
-    double          shdfac;       /* areal fractional coverage of green
-                                   * vegetation (0.0-1.0) (-) */
-    double          shdmin;       /* minimum areal fractional coverage of green
-                                   * vegetation (-) */
-    double          shdmax;       /* maximum areal fractional coverage of green
-                                   * vegetation (-) */
-    double          laimin;       /* minimum LAI across all seasons for a
-                                   * vegetation type (m2 m-2) */
-    double          laimax;       /* maximum LAI across all seasons for a
-                                   * vegetation type (m2 m-2) */
-    double          snup;         /* threshold snow depth (in water equivalent)
-                                   * that implies 100% snow cover (m) */
-    double          cfactr;       /* parameter used in the canopy interception
-                                   * calculation (-) */
-    double          emissmax;     /* minimum emissivity (-) */
-    double          emissmin;     /* maximum emissivity (-) */
-    double          albedomax;    /* minimum background albedo (-) */
-    double          albedomin;    /* maximum background albedo (-) */
-    double          z0max;        /* minimum roughness length (m) */
-    double          z0min;        /* maximum roughness length (m) */
-    double          rough;        /* surface roughness (Manning's n) (s m-1/3)
-                                   */
-    double          cmcfactr;     /* canopy water capacity per LAI (m) */
-    int             bare;         /* flag that indicates bare ground */
-    int             isurban;      /* flag that indicates urban */
+    double          shdfac;                 /* areal fractional coverage of
+                                             * green vegetation (0.0-1.0) (-) */
+    double          shdmin;                 /* minimum areal fractional coverage
+                                             * of green vegetation (-) */
+    double          shdmax;                 /* maximum areal fractional coverage
+                                             * of green vegetation (-) */
+    double          laimin;                 /* minimum LAI across all seasons
+                                             * for a vegetation type (m2 m-2) */
+    double          laimax;                 /* maximum LAI across all seasons
+                                             * for a vegetation type (m2 m-2) */
+    double          snup;                   /* threshold snow depth (in water
+                                             * equivalent) that implies 100%
+                                             * snow cover (m) */
+    double          cfactr;                 /* parameter used in the canopy
+                                             * interception calculation (-) */
+    double          emissmax;               /* minimum emissivity (-) */
+    double          emissmin;               /* maximum emissivity (-) */
+    double          albedomax;              /* minimum background albedo (-) */
+    double          albedomin;              /* maximum background albedo (-) */
+    double          z0max;                  /* minimum roughness length (m) */
+    double          z0min;                  /* maximum roughness length (m) */
+    double          rough;                  /* surface roughness (Manning's n)
+                                             * (s m-1/3) */
+    double          cmcfactr;               /* canopy water capacity per LAI (m)
+                                             */
+    int             bare;                   /* flag that indicates bare ground*/
+    int             isurban;                /* flag that indicates urban */
+    int             glacier;                /* flag that indicates glacier */
 } lc_struct;
 
+#if !defined(_CYCLES_)
 /* Ecophysiological parameters */
 typedef struct epconst_struct
 {
     double          rsmin;                  /* minimum canopy resistance (s m-1)
                                              */
-    double          rgl;                    /* reference incoming solar flux
-                                             * for photosynthetically active
-                                             * canopy (W m-2) */
+    double          rgl;                    /* reference incoming solar flux for
+                                             * photosynthetically active canopy
+                                             * (W m-2) */
     double          hs;                     /* parameter used in vapor pressure
                                              * deficit function (-) */
     double          topt;                   /* optimum transpiration air
                                              * temperature (K) */
     double          rsmax;                  /* cuticular resistance (s m-1) */
-#if defined(_BGC_)
+# if defined(_BGC_)
     int             woody;                  /* flag: 1 = woody, 0 = non-woody */
     int             evergreen;              /* flag: 1 = evergreen,
                                              * 0 = deciduous */
@@ -222,13 +189,13 @@ typedef struct epconst_struct
     double          livewood_turnover;      /* annual live wood turnover
                                              * fraction (yr-1) */
     double          daily_mortality_turnover;/* daily mortality turnover (day-1)
-                                              */
+                                             */
     double          daily_fire_turnover;    /* daily fire turnover (day-1) */
     double          alloc_frootc_leafc;     /* new fine root C to new leaf C (-)
                                              */
     double          alloc_newstemc_newleafc;/* new stem C to new leaf C (-) */
     double          alloc_newlivewoodc_newwoodc;/* new livewood C:new wood C (-)
-                                                 */
+                                             */
     double          alloc_crootc_stemc;     /* new live croot C to new live stem
                                              * C (-) */
     double          alloc_prop_curgrowth;   /* daily allocation to current
@@ -257,14 +224,12 @@ typedef struct epconst_struct
     double          deadwood_cn;            /* C:N for dead wood (kgC kgN-1) */
     double          leaflitr_cn;            /* constant C:N for leaf litter
                                              * (kgC kgN-1) */
-    double          leaflitr_flab;          /* leaf litter labile fraction (-)
-                                             */
+    double          leaflitr_flab;          /* leaf litter labile fraction (-)*/
     double          leaflitr_fucel;         /* leaf litter unshielded cellulose
                                              * fraction (-) */
     double          leaflitr_fscel;         /* leaf litter shielded cellulose
                                              * fraction (-) */
-    double          leaflitr_flig;          /* leaf litter lignin fraction (-)
-                                             */
+    double          leaflitr_flig;          /* leaf litter lignin fraction (-)*/
     double          frootlitr_flab;         /* fine root litter labile fraction
                                              * (-) */
     double          frootlitr_fucel;        /* fine root litter unshielded
@@ -278,8 +243,9 @@ typedef struct epconst_struct
     double          deadwood_fscel;         /* dead wood shielded cellulose
                                              * fraction (-) */
     double          deadwood_flig;          /* dead wood lignin fraction (-) */
-#endif
+# endif
 } epconst_struct;
+#endif
 
 /* Physical states */
 typedef struct pstate_struct
@@ -306,6 +272,27 @@ typedef struct pstate_struct
     double          rh;                     /* relative humidity (100%) */
     double          sfcprs;                 /* surface pressure at height zlvl
                                              * above ground (Pa) */
+#if defined(_BGC_)
+    double          co2;                    /* atmospheric CO2 concentration
+                                             * (ppm) */
+    double          ppfd_per_plaisun;       /* ppfd per unit sunlit proj LAI
+                                             * (umol m-2 s-1) */
+    double          ppfd_per_plaishade;     /* ppfd per unit shaded proj LAI
+                                             * (umol m-2 s-1) */
+    double          all_lai;                /* live all-sided leaf area index
+                                             * (m2 m-2) */
+    double          plaisun;                /* sunlit projected leaf area index
+                                             * (m2 m-2) */
+    double          plaishade;              /* shaded projected leaf area index
+                                             * (m2 m-2) */
+#endif
+#if defined(_CYCLES_)
+    double          res_intcp;
+    double          tau_res_stan;
+    double          tau_res_flat;
+    double          till_factr[MAXLYR];
+    double          comp_factr[MAXLYR];
+#endif
 #if defined(_NOAH_)
     double          alb;                    /* background snow-free surface
                                              * albedo (-) */
@@ -378,7 +365,10 @@ typedef struct pstate_struct
     double          sndens;                 /* snow density (dimensionless
                                              * fraction of H2O density) (-) */
     double          snowh;                  /* actual snow depth (m) */
+    double          iceh;                   /* actual glacier ice depth (m) */
     double          sncond;                 /* snow thermal conductivity
+                                             * (W m-1 K-1) */
+    double          icecond;                /* ice thermal conductivity
                                              * (W m-1 K-1) */
     double          rr;                     /* parameter in Penman potential
                                              * evaporation (-) */
@@ -396,45 +386,41 @@ typedef struct pstate_struct
     double          satdpth[MAXLYR];        /* depth of groundwater in each soil
                                              * layer (m) */
 #endif
-#if defined(_BGC_)
-    double          co2;                    /* atmospheric CO2 concentration
-                                             * (ppm) */
-    double          ppfd_per_plaisun;       /* ppfd per unit sunlit proj LAI
-                                             * (umol m-2 s-1) */
-    double          ppfd_per_plaishade;     /* ppfd per unit shaded proj LAI
-                                             * (umol m-2 s-1) */
-    double          all_lai;                /* live all-sided leaf area index
-                                             * (m2 m-2) */
-    double          plaisun;                /* sunlit projected leaf area index
-                                             * (m2 m-2) */
-    double          plaishade;              /* shaded projected leaf area index
-                                             * (m2 m-2) */
-#endif
 } pstate_struct;
 
 /* Water states */
 typedef struct wstate_struct
 {
-    double          surf;            /* equivalent surface water level (m) */
-    double          unsat;           /* unsaturated zone water storage (m) */
-    double          gw;              /* groundwater level (m) */
-    double          sneqv;           /* liquid water-equivalent snow depth (m)
-                                      */
-    double          cmcmax;          /* maximum canopy water capacity (m) */
-    double          cmc;             /* interception storage (m) */
-    double          surfh;           /* actual surface water level (m) */
+    double          surf;                   /* equivalent surface water level
+                                             * (m) */
+    double          unsat;                  /* unsaturated zone water storage
+                                             * (m) */
+    double          gw;                     /* groundwater level (m) */
+    double          sneqv;                  /* liquid water-equivalent snow
+                                             * depth (m) */
+    double          surfh;                  /* actual surface water level (m) */
+#if defined(_CYCLES_)
+    /* wstate variables in Cycles have the units of kg m-2 */
+    double          stanResidueWater;       /* (kg m-2) */
+    double          flatResidueWater;       /* (kg m-2) */
+#else
+    double          cmcmax;                 /* maximum canopy water capacity (m)
+                                             */
+    double          cmc;                    /* interception storage (m) */
+#endif
 #if defined(_FBR_)
-    double          fbr_unsat;       /* unsaturated storage in fractured bedrock
-                                      * layer (m) */
-    double          fbr_gw;          /* deep groundwater in fractured bedrock
-                                      * layer (m) */
+    double          fbr_unsat;              /* unsaturated storage in fractured
+                                             * bedrock layer (m) */
+    double          fbr_gw;                 /* deep groundwater in fractured
+                                             * bedrock layer (m) */
 #endif
 #if defined(_NOAH_)
-    double          smc[MAXLYR];     /* total soil moisture content (m3 m-3) */
-    double          sh2o[MAXLYR];    /* unfrozen soil moisture content (m3 m-3)
-                                      */
-    double          soilm;           /* total soil column moisture content (m)
-                                      */
+    double          smc[MAXLYR];            /* total soil moisture content
+                                             * (m3 m-3) */
+    double          sh2o[MAXLYR];           /* unfrozen soil moisture content
+                                             * (m3 m-3) */
+    double          soilm;                  /* total soil column moisture
+                                             * content (m) */
 #endif
 } wstate_struct;
 
@@ -443,11 +429,6 @@ typedef struct wflux_struct
 {
     double          ovlflow[NUM_EDGE];      /* overland flow (m3 s-1) */
     double          subsurf[NUM_EDGE];      /* subsurface flow (m3 s-1) */
-    
-    double          subveloRT[NUM_EDGE];    // 12.30, new RT add
-    double          subdistRT[NUM_EDGE];    // 12.30, new RT add
-    double          subareaRT[NUM_EDGE];    // 12.30, new RT add
-    
     double          prcp;                   /* precipitation on each element
                                              * (m s-1) */
     double          pcpdrp;                 /* combined prcp and drip (from
@@ -455,12 +436,14 @@ typedef struct wflux_struct
                                              * (m s-1) */
     double          infil;                  /* variable infiltration rate
                                              * (m s-1) */
+    double          eqv_infil;              /* adjusted equivalent infiltration
+                                             * rate for layered soil moisture
+                                             * calculation (m s-1) */
     double          rechg;                  /* recharge rate to groundwater
                                              * (m s-1) */
     double          drip;                   /* through-fall of precipitation
                                              * and/or dew (m s-1) */
-    double          edir;                   /* direct soil evaporation (m s-1)
-                                             */
+    double          edir;                   /* direct soil evaporation (m s-1)*/
     double          ett;                    /* total plant transpiration (m s-1)
                                              */
     double          ec;                     /* canopy water evaporation (m s-1)
@@ -480,6 +463,9 @@ typedef struct wflux_struct
                                              * (m s-1) */
     double          esnow;                  /* sublimation from (or deposition
                                              * to) snowpack (m s-1); */
+#if defined(_CYCLES_)
+    double          irrigationVol;          /* irrigation volume (m s-1) */
+#endif
 #if defined(_FBR_)
     double          fbr_infil;              /* fractured bedrock infiltration
                                              * (m s-1) */
@@ -487,6 +473,11 @@ typedef struct wflux_struct
                                              * (m s-1) */
     double          fbrflow[NUM_EDGE];      /* lateral fractured bedrock flow
                                              * (m3 s-1) */
+# if defined(_TGM_)
+    double          fbr_discharge;          /* discharge from fractured bedrock
+                                             * to river (only applies to 2-grid
+                                             * model) (m3 s-1) */
+# endif
 #endif
 #if defined(_NOAH_)
     double          et[MAXLYR];             /* plant transpiration from each
@@ -509,23 +500,19 @@ typedef struct wflux_struct
                                              * (m s-1) */
     double          etns;                   /* (m s-1) */
 #endif
-#if defined(_CYCLES_)
-    double          eres;                   /* evaporation from residue (m s-1)
-                                             */
-#endif
 } wflux_struct;
 
 /* Energy states */
 typedef struct estate_struct
 {
-    double          sfctmp;         /* air temperature at height zlvl above
-                                     * ground (K) */
+    double          sfctmp;                 /* air temperature at height zlvl
+                                             * above ground (K) */
 #if defined(_NOAH_)
-    double          t1;             /* ground/canopy/snowpack effective skin
-                                     * temperature (K) */
-    double          th2;            /* air potential temperature at height zlvl
-                                     * above ground (K) */
-    double          stc[MAXLYR];    /* soil temperature (K) */
+    double          t1;                     /* ground/canopy/snowpack effective
+                                             * skin temperature (K) */
+    double          th2;                    /* air potential temperature at
+                                             * height zlvl above ground (K) */
+    double          stc[MAXLYR];            /* soil temperature (K) */
 #endif
 } estate_struct;
 
@@ -534,13 +521,18 @@ typedef struct eflux_struct
 {
     double          soldn;                  /* solar downward radiation (W m-2)
                                              */
+#if defined(_BGC_)
+    double          swabs_per_plaisun;      /* swabs per unit sunlit proj LAI
+                                             * (W m-2) */
+    double          swabs_per_plaishade;    /* swabs per unit shaded proj LAI
+                                             * (W m-2) */
+#endif
 #if defined(_NOAH_)
     double          solnet;                 /* net downward solar radiation
                                              * (W m-2) */
     double          etp;                    /* potential evaporation (W m-2) */
     double          ssoil;                  /* soil heat flux (W m-2) */
-    double          eta;                    /* actual latent heat flux (W m-2)
-                                             */
+    double          eta;                    /* actual latent heat flux (W m-2)*/
     double          sheat;                  /* sensible heat flux (W m-2) */
     double          fdown;                  /* radiation forcing at the surface
                                              * (W m-2) */
@@ -548,8 +540,7 @@ typedef struct eflux_struct
                                              * radiation (W m-2) */
     double          ec;                     /* canopy water evaporation (W m-2)
                                              */
-    double          edir;                   /* direct soil evaporation (W m-2)
-                                             */
+    double          edir;                   /* direct soil evaporation (W m-2)*/
     double          et[MAXLYR];             /* plant transpiration from each
                                              * soil layer (W m-2) */
     double          ett;                    /* total plant transpiration (W m-2)
@@ -569,252 +560,204 @@ typedef struct eflux_struct
     double          flx3;                   /* snow melt latent heat flux
                                              * (W m-2) */
 #endif
-#if defined(_BGC_)
-    double          swabs_per_plaisun;      /* swabs per unit sunlit proj LAI
-                                             * (W m-2) */
-    double          swabs_per_plaishade;    /* swabs per unit shaded proj LAI
-                                             * (W m-2) */
-#endif
 } eflux_struct;
 
 #if defined(_CYCLES_)
-typedef struct crop_struct
+typedef struct epvar_struct
 {
-    /* Instance of the crop that is being planted */
-    char            cropName[MAXSTRING];
-
     /* User Defined Auto Irrigation */
-    int             autoIrrigationUsed;
-    int             autoIrrigationStartDay;
-    int             autoIrrigationStopDay;
-    double          autoIrrigationWaterDepletion;
-    int             autoIrrigationLastSoilLayer;
+    int             ai_used;
+    int             ai_start;
+    int             ai_stop;
+    double          ai_h2o_depl;
+    int             ai_last_lyr;
 
     /* User Defined Auto Fertilization */
-    int             autoFertilizationUsed;
-    int             autoFertilizationStartDay;
-    int             autoFertilizationStopDay;
-    double          autoFertilizationMass;
-    char            autoFertilizationSource;
-    char            autoFertilizationForm;
-    int             autoFertilizationMethod;
+    int             auto_fert;
 
-    /* Crop Status Flags */
-    int             cropGrowing;
-    int             cropMature;
+    double          plant_density;
+    int             clip_start;
+    int             clip_end;
 
     /* State Variables */
-    double          svTT_Daily;
-    double          svTT_Cumulative;
-    double          svRadiationInterception;
-    double          svBiomass;
-    double          svShoot;
-    double          svRoot;
-    double          svRizho;
-    double          svShootDailyGrowth;
-    double          svRootDailyGrowth;
-    double          svRizhoDailyDeposition;
-    double          svUnstressedShootDailyGrowth;
-    double          svUnstressedRootDailyGrowth;
-    double          svPostFloweringShootBiomass;
-    double          svRootingDepth;
-    double          svTranspiration;
-    double          svTranspirationPotential;
-    double          svN_Shoot;
-    double          svN_Root;
-    double          svN_Rhizo;
-    double          svN_RizhoDailyDeposition;
-    double          svN_AutoAdded;
-    double          svN_Fixation;
-    double          svWaterStressFactor;
-    double          svN_StressFactor;
+    double          tt_daily;
+    double          tt_cum;
+    double          rad_intcp;
+    double          rad_intcp_brown;
+    double          root_dpth;
+    double          h2o_stress;
+    double          n_stress;
+    double          shoot_growth_unstr_cum; /* (kg m-2 day-1) */
+    double          n_stress_cum;
+    double          rad_intcp_nc;
+    int             harv_date_final;
+    int             nharv;
+    int             stage;
+    double          harv_biomass;           /* (kg m-2) */
+    double          harv_root;              /* (kg m-2) */
+    double          harv_forage_yield;      /* (kg m-2) */
+    double          harv_res_biomass;       /* (kg m-2) */
+    double          harv_transp;            /* (kg m-2) */
+    double          harv_transp_pot;        /* (kg m-2) */
+    double          harv_soil_evap;         /* (kg m-2) */
+} epvar_struct;
 
-    double          svShootUnstressed;
-    double          svN_StressCumulative;
+typedef struct crop_wflux_struct
+{
+    double          transp;
+    double          transp_pot;
+} crop_wflux_struct;
 
-    double          svRadiationInterception_nc;
+typedef struct crop_cstate_struct
+{
+    double          shoot;                  /* (kg m-2) */
+    double          root;                   /* (kg m-2) */
+    double          rhizho;                 /* (kg m-2) */
+    double          shoot_post_flower;      /* (kg m-2) */
+} crop_cstate_struct;
 
-    double          dailyTranspiration;
-    double          dailyTranspirationPotential;
+typedef struct crop_cflux_struct
+{
+    double          shoot_growth;           /* (kg m-2 day-1) */
+    double          root_growth;            /* (kg m-2 day-1) */
+    double          rhizo_depo;             /* (kg m-2 day-1) */
+    double          shoot_growth_unstr;     /* (kg m-2 day-1) */
+    double          root_growth_unstr;      /* (kg m-2 day-1) */
+} crop_cflux_struct;
 
-    double          userFloweringTT;
-    double          userMaturityTT;
-    double          userMaximumSoilCoverage;
-    double          userMaximumRootingDepth;
-    double          userExpectedYieldAvg;
-    double          userExpectedYieldMax;
-    double          userExpectedYieldMin;
-    double          userPercentMoistureInYield;
-    double          userFractionResidueStanding;
-    double          userFractionResidueRemoved;
-    double          userClippingBiomassThresholdUpper;
-    double          userClippingBiomassThresholdLower;
-    double          userClippingTiming;
-    int             userClippingDestiny;
-    double          userTranspirationMinTemperature;
-    double          userTranspirationThresholdTemperature;
-    double          userColdDamageMinTemperature;
-    double          userColdDamageThresholdTemperature;
-    double          userTemperatureBase;
-    double          userTemperatureOptimum;
-    double          userTemperatureMaximum;
-    double          userShootPartitionInitial;
-    double          userShootPartitionFinal;
-    double          userRadiationUseEfficiency;
-    double          userTranspirationUseEfficiency;
-    double          userHIx;
-    double          userHIo;    /* intercept harvest index */
-    double          userHIk;
-    double          userEmergenceTT;
-    double          userNMaxConcentration;
-    double          userNDilutionSlope;
-    double          userKc;
-    int             userAnnual;
-    int             userLegume;
-    int             userC3orC4;
-    double          userExtinctionCoefficient;
+typedef struct crop_nstate_struct
+{
+    double          shoot_n;                /* (kg m-2) */
+    double          root_n;                 /* (kg m-2) */
+    double          rhizo_n;                /* (kg m-2) */
+} crop_nstate_struct;
 
-    double          userPlantingDensity;
+typedef struct crop_nflux_struct
+{
+    double          rhizo_n_depo;           /* (kg m-2 day-1) */
+    double          n_auto;                 /* (kg m-2 day-1) */
+    double          n_fix;                  /* (kg m-2 day-1) */
+} crop_nflux_struct;
 
-    int             userClippingStart;
-    int             userClippingEnd;
-    double          calculatedSimAvgYield;
-    double          calculatedSimMaxYield;
-    double          calculatedSimMinYield;
-    double          LWP_StressOnset;
-    double          LWP_WiltingPoint;
-    double          transpirationMax;
-
-    int             harvestDateFinal;
-    int             harvestCount;
-    int             stageGrowth;
-
-    double          rcForageYield;
-    double          rcGrainYield;
-    double          rcBiomass;
-    double          rcRoot;
-    double          rcResidueBiomass;
-    double          rcCropTranspiration;
-    double          rcCropTranspirationPotential;
-    double          rcSoilWaterEvaporation;
-    double          rcHarvestIndex;
-    double          rcTotalNitrogen;
-    double          rcRootNitrogen;
-    double          rcGrainNitrogenYield;
-    double          rcForageNitrogenYield;
-    double          rcNitrogenCumulative;
-    double          rcNitrogenInHarvest;
-    double          rcNitrogenInResidue;
-    double          rcNitrogenForageConc;
+typedef struct crop_struct
+{
+    epconst_struct *epc;
+    epvar_struct    epv;
+    crop_wflux_struct cwf;
+    crop_cstate_struct ccs;
+    crop_cflux_struct ccf;
+    crop_nstate_struct cns;
+    crop_nflux_struct cnf;
 } crop_struct;
 
-typedef struct comm_struct
+typedef struct mgmt_struct
 {
-    /* State Variables */
-    double          svRadiationInterception;
-    double          svBiomass;
-    double          svShoot;
-    double          svRoot;
-    double          svRizho;
-    double          svShootDailyGrowth;
-    double          svRootDailyGrowth;
-    double          svRizhoDailyDeposition;
-    double          svRootingDepth; /* maximum */
-    double          svTranspiration;
-    double          svTranspirationPotential;
-    double          svN_Shoot;
-    double          svN_Root;
-    double          svN_Rhizo;
-    double          svN_RizhoDailyDeposition;
-    double          svN_AutoAdded;
-    double          svN_Fixation;
-    double          svWaterStressFactor;
-    double          svN_StressFactor;
+    int             rot_size;
+    int             auto_n;
+    int             rot_year;
+    int             op_ptr[4];
+} mgmt_struct;
 
-    crop_struct    *Crop;
-    int             NumCrop;
-    int             NumActiveCrop;
-} comm_struct;
-
-typedef struct residue_struct
+typedef struct cstate_struct
 {
-    double          residueInterception;
-    double          stanResidueTau;
-    double          flatResidueTau;
-    double          stanResidueMass;
-    double          flatResidueMass;
-    double          stanResidueN;
-    double          flatResidueN;
-    double          manureSurfaceC;
-    double          manureSurfaceN;
+    double          SOC_Mass[MAXLYR];       /* Soil organic carbon (kg m-2) */
+    double          MBC_Mass[MAXLYR];       /* Microbial biomass C (kg m-2) */
+    double          stanResidueMass;        /* (kg m-2) */
+    double          flatResidueMass;        /* (kg m-2) */
+    double          manureSurfaceC;         /* (kg m-2) */
+    double          residueAbgd[MAXLYR];    /* (kg m-2) */
+    double          residueRt[MAXLYR];      /* (kg m-2) */
+    double          residueRz[MAXLYR];      /* (kg m-2) */
+    double          manureC[MAXLYR];        /* (kg m-2) */
+} cstate_struct;
 
-    double          stanResidueWater;
-    double          flatResidueWater;   /* (mm) */
-
-    double          residueAbgd[MAXLYR];
-    double          residueRt[MAXLYR];
-    double          residueRz[MAXLYR];
-    double          residueAbgdN[MAXLYR];
-    double          residueRtN[MAXLYR];
-    double          residueRzN[MAXLYR];
-    double          yearResidueBiomass;
-    double          yearResidueHarvested;
-    double          yearRootBiomass;
-    double          yearRhizodepositionBiomass;
-    double          manureC[MAXLYR];
-    double          manureN[MAXLYR];    /* Mg/ha */
-} residue_struct;
-
-typedef struct soilc_struct
+typedef struct cflux_struct
 {
-    double          factorComposite[MAXLYR];
-    double          carbonRespired[MAXLYR];
-    double          rootBiomassInput[MAXLYR];
-    double          rhizBiomassInput[MAXLYR];
-    double          abgdBiomassInput[MAXLYR];
-    double          rootCarbonInput[MAXLYR];
-    double          rhizCarbonInput[MAXLYR];
-    double          manuCarbonInput[MAXLYR];
-    double          abgdCarbonInput[MAXLYR];
-    double          carbonMassInitial[MAXLYR];
-    double          carbonMassFinal[MAXLYR];
-    double          annualDecompositionFactor[MAXLYR];
-    double          annualSoilCarbonDecompositionRate[MAXLYR];
-    double          annualCarbonInputByLayer[MAXLYR];
-    double          annualHumifiedCarbonMass[MAXLYR];
-    double          annualRespiredCarbonMass[MAXLYR];
-    double          annualRespiredResidueCarbonMass[MAXLYR];
-    double          annualHumificationCoefficient[MAXLYR];
-    double          annualNmineralization[MAXLYR];
-    double          annualNImmobilization[MAXLYR];
-    double          annualNNetMineralization[MAXLYR];
-    double          annualAmmoniumNitrification;
-    double          annualNitrousOxidefromNitrification;
-    double          annualAmmoniaVolatilization;
-    double          annualNO3Denitrification;
-    double          annualNitrousOxidefromDenitrification;
-    double          annualNitrateLeaching;
-    double          annualAmmoniumLeaching;
-} soilc_struct;
+    double          C_Humified;             /* Carbon humified from residues,
+                                             * roots, rizho, and manure
+                                             * (kg m-2 day-1)*/
+    double          C_ResidueRespired;      /* Carbon respired from residues,
+                                             * roots, rizho, and manure
+                                             * (kg m-2 day-1)*/
+    double          C_SoilRespired;         /* Carbon respired from soil
+                                             * organic carbon only
+                                             * (kg m-2 day-1)*/
+    double          carbonRespired[MAXLYR]; /* kg m-2 day-1 */
+} cflux_struct;
 
-typedef struct cyclesic_struct
+typedef struct nstate_struct
 {
-    double          SOC_Mass[MAXLYR];
-    double          SON_Mass[MAXLYR];
-    double          MBC_Mass[MAXLYR];
-    double          MBN_Mass[MAXLYR];
-    double          NO3[MAXLYR];
-    double          NH4[MAXLYR];
-} cyclesic_struct;
+    double          no3[MAXLYR];            /* nitrate (kg m-2) */
+    double          nh4[MAXLYR];            /* ammonium (kg m-2) */
+    double          SON_Mass[MAXLYR];       /* Soil organic N (kg m-2) */
+    double          MBN_Mass[MAXLYR];       /* Microbial biomass N (kg m-2) */
+    double          stanResidueN;           /* (kg m-2) */
+    double          flatResidueN;           /* (kg m-2) */
+    double          manureSurfaceN;         /* (kg m-2) */
+    double          residueAbgdN[MAXLYR];   /* (kg m-2) */
+    double          residueRtN[MAXLYR];     /* (kg m-2) */
+    double          residueRzN[MAXLYR];     /* (kg m-2) */
+    double          manureN[MAXLYR];        /* (kg m-2) */
+} nstate_struct;
+
+typedef struct nflux_struct
+{
+    double          no3leached;             /* NO3 leaching (kg N m-2 day-1) */
+    double          nh4leached;             /* NH4 leaching (kg N m-2 day-1) */
+    double          N_Immobilization;       /* (kg m-2 day-1) */
+    double          N_Mineralization;       /* (kg m-2 day-1) */
+    double          N_NetMineralization;    /* (kg m-2 day-1) */
+    double          nh4nitrif;              /* (kg m-2 day-1) */
+    double          N2O_Nitrification;      /* (kg m-2 day-1) */
+    double          no3denitrif;            /* (kg m-2 day-1) */
+    double          n2odenitrif;            /* (kg m-2 day-1) */
+    double          nh4volat[MAXLYR];       /* (kg m-2 day-1) */
+    double          uptake_no3[MAXLYR];     /* (kg m-2 day-1) */
+    double          uptake_nh4[MAXLYR];     /* (kg m-2 day-1) */
+    double          surplusn;               /* (kg m-2 day-1) */
+    double          fert_no3[MAXLYR];       /* (kg m-2 day-1) */
+    double          fert_nh4[MAXLYR];       /* (kg m-2 day-1) */
+    double          immob_no3[MAXLYR];      /* (kg m-2 day-1) */
+    double          immob_nh4[MAXLYR];      /* (kg m-2 day-1) */
+    double          nitrif_nh4_to_no3[MAXLYR];/* (kg m-2 day-1) */
+    double          nitrif_nh4_to_n2o[MAXLYR];/* (kg m-2 day-1) */
+    double          denitn[MAXLYR];         /* (kg m-2 day-1) */
+    double          till_no3[MAXLYR];       /* (kg m-2 day-1) */
+    double          till_nh4[MAXLYR];       /* (kg m-2 day-1) */
+    double          urine;                  /* (kg m-2 day-1) */
+} nflux_struct;
+
+typedef struct nprof_struct
+{
+    double          no3;
+    double          nh4;
+} nprof_struct;
+
+/* Solute transport structure */
+typedef struct solute_struct
+{
+    double          conc;                   /* subsurface pool concentration
+                                             * (kg kgH2O-1) */
+    double          flux[NUM_EDGE];         /* subsurface solute flux (kg s-1)*/
+    double          snksrc;                 /* subsurface sink/source term
+                                             * (kg m-2 s-1) */
+} solute_struct;
 #endif
 
 /* Boundary conditions */
 typedef struct bc_struct
 {
-    double          head[NUM_EDGE];    /* value of Dirichlet-type boundary
-                                        * condition (m) */
-    double          flux[NUM_EDGE];    /* value of Neumann-type boundary
-                                        * condition (m3 s-1) */
+    union
+    {
+        double          head[NUM_EDGE];     /* value of Dirichlet-type boundary
+                                             * condition (m) */
+        double          flux[NUM_EDGE];     /* value of Neumann-type boundary
+                                             * condition (m3 s-1) */
+    };
+#if defined(_RT_)
+    double          conc[NUM_EDGE][MAXSPS]; /* value of chemical concentration
+                                             * boundary condition (M LH2O-1) */
+#endif
 } bc_struct;
 
 /* Land surface and hydrologic initial conditions */
@@ -837,6 +780,34 @@ typedef struct ic_struct
     double          sh2o[MAXLYR];
 #endif
 } ic_struct;
+
+#if defined(_CYCLES_)
+typedef struct cyclesic_struct
+{
+    double          resw_stan;
+    double          resw_flat;
+    double          resm_stan;
+    double          resm_flat;
+    double          manuc_surf;
+    double          resn_stan;
+    double          resn_flat;
+    double          manun_surf;
+    double          res_abgd[MAXLYR];
+    double          res_root[MAXLYR];
+    double          res_rhizo[MAXLYR];
+    double          manuc[MAXLYR];
+    double          resn_abgd[MAXLYR];
+    double          resn_root[MAXLYR];
+    double          resn_rhizo[MAXLYR];
+    double          manun[MAXLYR];
+    double          soc[MAXLYR];
+    double          son[MAXLYR];
+    double          mbc[MAXLYR];
+    double          mbn[MAXLYR];
+    double          no3[MAXLYR];
+    double          nh4[MAXLYR];
+} cyclesic_struct;
+#endif
 
 #if defined(_BGC_)
 /* CN initial conditions */
@@ -918,43 +889,6 @@ typedef struct bgcic_struct
     double          offset_fdd;
     double          offset_swi;
 } bgcic_struct;
-
-/* CN spinup variables */
-typedef struct spinup_struct
-{
-    double          soilc_prev;
-    double          totalc_prev;
-    double          soilc;
-    double          totalc;
-    int             steady;
-} spinup_struct;
-#endif
-
-#if defined(_CYCLES_)
-typedef struct weather_struct
-{
-    int            *lastDoy;
-    double        **wind;
-    double        **solarRadiation;
-    double        **tMax;
-    double        **tMin;
-    double        **vpd;
-    double          atmosphericPressure;
-} weather_struct;
-
-typedef struct snow_struct
-{
-    double          snowCover;
-} snow_struct;
-
-typedef struct solute_struct
-{
-    double          soluteMass[MAXLYR];
-    double          soluteMassAdsorbed[MAXLYR];
-    double          soluteConc[MAXLYR];
-    double          soluteFluxLat[NUM_EDGE][MAXLYR];
-    double          soluteFluxVert[MAXLYR];
-} solute_struct;
 #endif
 
 #if defined(_DAILY_)
@@ -962,44 +896,42 @@ typedef struct solute_struct
 /* Daily average variables */
 typedef struct daily_struct
 {
-    int             counter;               /* counter used for averaging */
-    int             daylight_counter;      /* counter used for daytime averaging
-                                            */
-    double          avg_sh2o[MAXLYR];      /* daily average unfrozen soil water
-                                            * content (m3 m-3) */
-    double          avg_smc[MAXLYR];       /* daily average unfrozen soil
-                                            * moisture content (m3 m-3) */
-    double          avg_et[MAXLYR];        /* daily average evapotranspiration
-                                            * (m s-1) */
-    double          avg_q2d;               /* daily average mixing ratio deficit
-                                            * (kg kg-1) */
-    double          avg_sfcprs;            /* daily average air pressure (Pa) */
-    double          avg_ch;                /* daily average surface exchange
-                                            * coefficient (m s-1) */
-    double          avg_rc;                /* daily average stomatal resistance
-                                            * (s m-1) */
-    double          avg_albedo;            /* daily average surface albedo
-                                            * (-) */
-    double          avg_sfcspd;            /* daily average wind speed (m s-1)
-                                            */
-    double          avg_sncovr;            /* daily average snow cover fraction
-                                            * (-) */
-    double          tmax;                  /* daily maximum air temperature (K)
-                                            */
-    double          tmin;                  /* daily minimum air temperature (K)
-                                            */
-    double          avg_sfctmp;            /* daily average air temperature (K)
-                                            */
-    double          tday;                  /* daytime average air temperature
-                                            * (K) */
-    double          tnight;                /* nighttime average air temperature
-                                            * (K) */
-    double          avg_stc[MAXLYR];       /* daily average soil temperature (K)
-                                            */
-    double          avg_soldn;             /* daytime average downward solar
-                                            * radiation (W m-2) */
-    double          solar_total;           /* daily total solar radiation
-                                            * (J m-2) */
+    int             counter;                /* counter used for averaging */
+    int             daylight_counter;       /* counter used for daytime
+                                             * averaging */
+    double          avg_sh2o[MAXLYR];       /* daily average unfrozen soil water
+                                             * content (m3 m-3) */
+    double          avg_smc[MAXLYR];        /* daily average unfrozen soil
+                                             * moisture content (m3 m-3) */
+    double          avg_q2d;                /* daily average mixing ratio
+                                             * deficit (kg kg-1) */
+    double          avg_sfcprs;             /* daily average air pressure (Pa)*/
+    double          avg_ch;                 /* daily average surface exchange
+                                             * coefficient (m s-1) */
+    double          avg_rc;                 /* daily average stomatal resistance
+                                             * (s m-1) */
+    double          avg_albedo;             /* daily average surface albedo (-)
+                                             */
+    double          tmax;                   /* daily maximum air temperature (K)
+                                             */
+    double          tmin;                   /* daily minimum air temperature (K)
+                                             */
+    double          avg_sfctmp;             /* daily average air temperature (K)
+                                             */
+    double          tday;                   /* daytime average air temperature
+                                             * (K) */
+    double          tnight;                 /* nighttime average air temperature
+                                             * (K) */
+    double          avg_stc[MAXLYR];        /* daily average soil temperature
+                                             * (K) */
+    double          avg_soldn;              /* daytime average downward solar
+                                             * radiation (W m-2) */
+# if defined(_CYCLES_)
+    double          avg_et[MAXLYR];         /* daily average evapotranspiration
+                                             * (m s-1) */
+    double          avg_sncovr;             /* daily average snow cover fraction
+                                             * (-) */
+# endif
 } daily_struct;
 #endif
 
@@ -1033,8 +965,7 @@ typedef struct cstate_struct
                                              * (kgC m-2) */
     double          gresp_transfer;         /* growth respiration transfer
                                              * (kgC m-2) */
-    double          cwdc;                   /* coarse woody debris C (kgC m-2)
-                                             */
+    double          cwdc;                   /* coarse woody debris C (kgC m-2)*/
     double          litr1c;                 /* litter labile C (kgC m-2) */
     double          litr2c;                 /* litter unshielded cellulose C
                                              * (kgC m-2) */
@@ -1044,8 +975,7 @@ typedef struct cstate_struct
     double          soil1c;                 /* microbial recycling pool C (fast)
                                              * (kgC m-2) */
     double          soil2c;                 /* microbial recycling pool C
-                                             * (medium)
-                                             * (kgC m-2) */
+                                             * (medium) (kgC m-2) */
     double          soil3c;                 /* microbial recycling pool C (slow)
                                              * (kgC m-2) */
     double          soil4c;                 /* recalcitrant SOM C (humus,
@@ -1238,7 +1168,6 @@ typedef struct cflux_struct
     double          livecrootc_to_deadcrootc;
 } cflux_struct;
 
-
 /* Nitrogen state variables (including sums for sources and sinks) */
 typedef struct nstate_struct
 {
@@ -1266,32 +1195,35 @@ typedef struct nstate_struct
     double          deadcrootn;
     double          deadcrootn_storage;
     double          deadcrootn_transfer;
-    double          cwdn;            /* coarse woody debris N (kgN m-2) */
-    double          litr1n;          /* litter labile N (kgN m-2) */
-    double          litr2n;          /* litter unshielded cellulose N (kgN m-2)
-                                      */
-    double          litr3n;          /* litter shielded cellulose N (kgN m-2) */
-    double          litr4n;          /* litter lignin N (kgN m-2) */
-    double          soil1n;          /* microbial recycling pool N (fast)
-                                      * (kgN m-2) */
-    double          soil2n;          /* microbial recycling pool N (medium)
-                                      * (kgN m-2) */
-    double          soil3n;          /* microbial recycling pool N (slow)
-                                      * (kgN m-2) */
-    double          soil4n;          /* recalcitrant SOM N (humus, slowest)
-                                      * (kgN m-2) */
-    double          surfn;           /* surface mineral N (kgN m-2) */
-    double          sminn;           /* soil mineral N (kgN m-2) */
-    double          retransn;        /* plant pool of retranslocated N (kgN m-2)
-                                      */
-    double          npool;           /* temporary plant N pool (kgN m-2) */
-    double          nfix_src;        /* SUM of biological N fixation (kgN m-2)
-                                      */
-    double          ndep_src;        /* SUM of N deposition inputs (kgN m-2) */
-    double          nleached_snk;    /* SUM of N leached (kgN m-2) */
-    double          nvol_snk;        /* SUM of N lost to volatilization
-                                      * (kgN m-2) */
-    double          fire_snk;        /* SUM of N lost to fire (kgN m-2) */
+    double          cwdn;                   /* coarse woody debris N (kgN m-2)*/
+    double          litr1n;                 /* litter labile N (kgN m-2) */
+    double          litr2n;                 /* litter unshielded cellulose N
+                                             * (kgN m-2) */
+    double          litr3n;                 /* litter shielded cellulose N
+                                             * (kgN m-2) */
+    double          litr4n;                 /* litter lignin N (kgN m-2) */
+    double          soil1n;                 /* microbial recycling pool N (fast)
+                                             * (kgN m-2) */
+    double          soil2n;                 /* microbial recycling pool N
+                                             * (medium) (kgN m-2) */
+    double          soil3n;                 /* microbial recycling pool N (slow)
+                                             * (kgN m-2) */
+    double          soil4n;                 /* recalcitrant SOM N (humus,
+                                             * slowest) (kgN m-2) */
+    double          surfn;                  /* surface mineral N (kgN m-2) */
+    double          sminn;                  /* soil mineral N (kgN m-2) */
+    double          retransn;               /* plant pool of retranslocated N
+                                             * (kgN m-2) */
+    double          npool;                  /* temporary plant N pool (kgN m-2)
+                                             */
+    double          nfix_src;               /* sum of biological N fixation
+                                             * (kgN m-2) */
+    double          ndep_src;               /* sum of N deposition inputs
+                                             * (kgN m-2) */
+    double          nleached_snk;           /* sum of N leached (kgN m-2) */
+    double          nvol_snk;               /* sum of N lost to volatilization
+                                             * (kgN m-2) */
+    double          fire_snk;               /* sum of N lost to fire (kgN m-2)*/
 } nstate_struct;
 
 /* Daily nitrogen flux variables */
@@ -1433,59 +1365,57 @@ typedef struct nflux_struct
  * immobilization fluxes and plant growth N demands */
 typedef struct ntemp_struct
 {
-    double          surfn0;             /* surface N of previous time step
-                                         * (kg N m-2) */
-    double          sminn0;             /* subsurface N of previous time step
-                                         * (kg N m-2) */
-    double          mineralized;        /* N mineralization (kgN m-2 day-1) */
-    double          potential_immob;    /* potential N immobilization (kgN m-2)
-                                         */
-    double          plitr1c_loss;       /* potential loss from litter labile
-                                         * pool (kgN m-2 day-1) */
-    double          pmnf_l1s1;          /* potential mineral N flux
-                                         * (kgN m-2 day-1) */
-    double          plitr2c_loss;       /* potential loss from litter unshielded
-                                         * pool (kgN m-2 day-1) */
-    double          pmnf_l2s2;          /* potential mineral N flux
-                                         * (kgN m-2 day-1) */
-    double          plitr4c_loss;       /* potential loss from litter lignin
-                                         * pool (kgN m-2 day-1) */
-    double          pmnf_l4s3;          /* potential mineral N flux
-                                         * (kgN m-2 day-1) */
-    double          psoil1c_loss;       /* potential loss from fast soil pool
-                                         * (kgN m-2 day-1) */
-    double          pmnf_s1s2;          /* potential mineral N flux
-                                         * (kgN m-2 day-1) */
-    double          psoil2c_loss;       /* potential loss from medium soil pool
-                                         * (kgN m-2 day-1) */
-    double          pmnf_s2s3;          /* potential mineral N flux
-                                         * (kgN m-2 day-1) */
-    double          psoil3c_loss;       /* potential loss from slow soil pool
-                                         * (kgN m-2 day-1) */
-    double          pmnf_s3s4;          /* potential mineral N flux
-                                         * (kgN m-2 day-1) */
-    double          psoil4c_loss;       /* potential loss from slowest soil pool
-                                         * (kgN m-2 day-1) */
-    double          kl4;                /* decomposition rate of lignin litter
-                                         * pool (day -1) */
+    double          surfn0;                 /* surface N of previous time step
+                                             * (kg N m-2) */
+    double          sminn0;                 /* subsurface N of previous time
+                                             * step (kg N m-2) */
+    double          mineralized;            /* N mineralization (kgN m-2 day-1)
+                                             */
+    double          potential_immob;        /* potential N immobilization
+                                             * (kgN m-2) */
+    double          plitr1c_loss;           /* potential loss from litter labile
+                                             * pool (kgN m-2 day-1) */
+    double          pmnf_l1s1;              /* potential mineral N flux
+                                             * (kgN m-2 day-1) */
+    double          plitr2c_loss;           /* potential loss from litter
+                                             * unshielded pool (kgN m-2 day-1)*/
+    double          pmnf_l2s2;              /* potential mineral N flux
+                                             * (kgN m-2 day-1) */
+    double          plitr4c_loss;           /* potential loss from litter lignin
+                                             * pool (kgN m-2 day-1) */
+    double          pmnf_l4s3;              /* potential mineral N flux
+                                             * (kgN m-2 day-1) */
+    double          psoil1c_loss;           /* potential loss from fast soil
+                                             * pool (kgN m-2 day-1) */
+    double          pmnf_s1s2;              /* potential mineral N flux
+                                             * (kgN m-2 day-1) */
+    double          psoil2c_loss;           /* potential loss from medium soil
+                                             * pool (kgN m-2 day-1) */
+    double          pmnf_s2s3;              /* potential mineral N flux
+                                             * (kgN m-2 day-1) */
+    double          psoil3c_loss;           /* potential loss from slow soil
+                                             * pool (kgN m-2 day-1) */
+    double          pmnf_s3s4;              /* potential mineral N flux
+                                             * (kgN m-2 day-1) */
+    double          psoil4c_loss;           /* potential loss from slowest soil
+                                             * pool (kgN m-2 day-1) */
+    double          kl4;                    /* decomposition rate of lignin
+                                             * litter pool (day -1) */
 } ntemp_struct;
 
 /* Ecophysiological variables */
 typedef struct epvar_struct
 {
-    double          bg_leafc_litfall_rate;  /* rate leaf litfall (kgC m-2 s-1)
-                                             */
+    double          bg_leafc_litfall_rate;  /* rate leaf litfall (kgC m-2 s-1)*/
     double          bg_frootc_litfall_rate; /* rate froot litfall (kgC m-2 s-1)
                                              */
     double          livestemc_turnover_rate;/* rate livestem turnover
                                              * (kgC m-2 s-1) */
-    double          livecrootc_turnover_rate; /* rate livecroot turnover
+    double          livecrootc_turnover_rate;/* rate livecroot turnover
                                              * (kgC m-2 s-1) */
     double          dsr;                    /* number of days since rain */
-    double          sun_proj_sla;           /* sunlit projected SLA (m2 kgC-1)
-                                             */
-    double          shade_proj_sla;         /* shaded projected SLA (m2 kgC-1)
-                                             */
+    double          sun_proj_sla;           /* sunlit projected SLA (m2 kgC-1)*/
+    double          shade_proj_sla;         /* shaded projected SLA (m2 kgC-1)*/
     double          psi;                    /* water potential of soil and
                                              * leaves (MPa) */
     double          dlmr_area_sun;          /* sunlit leaf MR (umolC/m2
@@ -1514,10 +1444,8 @@ typedef struct epvar_struct
     double          m_psi;                  /* water potential multiplier (-) */
     double          m_co2;                  /* atmospheric (CO2) multiplier (-)
                                              */
-    double          m_ppfd_sun;             /* PAR flux density multiplier (-)
-                                             */
-    double          m_ppfd_shade;           /* PAR flux density multiplier (-)
-                                             */
+    double          m_ppfd_sun;             /* PAR flux density multiplier (-)*/
+    double          m_ppfd_shade;           /* PAR flux density multiplier (-)*/
     double          m_vpd;                  /* vapor pressure deficit multiplier
                                              * (-) */
     double          m_final_sun;            /* product of all other multipliers
@@ -1531,8 +1459,8 @@ typedef struct epvar_struct
                                              * dormancy */
     int             onset_flag;             /* onset flag */
     int             onset_counter;          /* onset days counter */
-    int             onset_gddflag;          /* onset flag for growing degree
-                                             * day sum */
+    int             onset_gddflag;          /* onset flag for growing degree day
+                                             * sum */
     double          onset_fdd;              /* onset freezing degree days
                                              * counter */
     double          onset_gdd;              /* onset growing degree days */
@@ -1561,51 +1489,67 @@ typedef struct epvar_struct
 /* Structure for the photosynthesis routine */
 typedef struct psn_struct
 {
-    int             c3;       /* set to 1 for C3 model, 0 for C4 model */
-    double          pa;       /* atmospheric pressure (Pa) */
-    double          co2;      /* atmospheric CO2 concentration (ppm) */
-    double          t;        /* temperature (deg C) */
-    double          lnc;      /* leaf N per unit sunlit leaf area (kg Nleaf m-2)
-                               */
-    double          flnr;     /* fract. of leaf N in Rubisco (kg NRub/kg Nleaf)
-                               */
-    double          ppfd;     /* PAR flux per unit sunlit leaf area
-                               * (umol m-2 s-1) */
-    double          g;        /* conductance to CO2 (umol m-2 s-1 Pa-1) */
-    double          dlmr;     /* day leaf maintenance respiration, projected
-                               * area basis (umol m-2 s-1) */
-    double          Ci;       /* intercellular CO2 concentration (Pa) */
-    double          O2;       /* atmospheric O2 concentration (Pa) */
-    double          Ca;       /* atmospheric CO2 concentration (Pa) */
-    double          gamma;    /* CO2 compensation point, no Rd (Pa) */
-    double          Kc;       /* MM constant carboxylation (Pa) */
-    double          Ko;       /* MM constant oxygenation (Pa) */
-    double          Vmax;     /* max rate carboxylation (umol m-2 s-1) */
-    double          Jmax;     /* max rate electron transport (umol m-2 s-1) */
-    double          J;        /* rate of RuBP regeneration (umol m-2 s-1) */
-    double          Av;       /* carboxylation limited assimilation
-                               * (umol m-2 s-1) */
-    double          Aj;       /* RuBP regen limited assimilation (umol m-2 s-1)
-                               */
-    double          A;        /* final assimilation rate (umol m-2 s-1) */
+    int             c3;                     /* set to 1 for C3 model,
+                                             * 0 for C4 model */
+    double          pa;                     /* atmospheric pressure (Pa) */
+    double          co2;                    /* atmospheric CO2 concentration
+                                             * (ppm) */
+    double          t;                      /* temperature (deg C) */
+    double          lnc;                    /* leaf N per unit sunlit leaf area
+                                             * (kg Nleaf m-2) */
+    double          flnr;                   /* fract. of leaf N in Rubisco
+                                             * (kg NRub/kg Nleaf) */
+    double          ppfd;                   /* PAR flux per unit sunlit leaf
+                                             * area (umol m-2 s-1) */
+    double          g;                      /* conductance to CO2
+                                             * (umol m-2 s-1 Pa-1) */
+    double          dlmr;                   /* day leaf maintenance respiration,
+                                             * projected area basis
+                                             * (umol m-2 s-1) */
+    double          Ci;                     /* intercellular CO2 concentration
+                                             * (Pa) */
+    double          O2;                     /* atmospheric O2 concentration (Pa)
+                                             */
+    double          Ca;                     /* atmospheric CO2 concentration
+                                             * (Pa) */
+    double          gamma;                  /* CO2 compensation point, no Rd
+                                             * (Pa) */
+    double          Kc;                     /* MM constant carboxylation (Pa) */
+    double          Ko;                     /* MM constant oxygenation (Pa) */
+    double          Vmax;                   /* max rate carboxylation
+                                             * (umol m-2 s-1) */
+    double          Jmax;                   /* max rate electron transport
+                                             * (umol m-2 s-1) */
+    double          J;                      /* rate of RuBP regeneration
+                                             * (umol m-2 s-1) */
+    double          Av;                     /* carboxylation limited
+                                             * assimilation (umol m-2 s-1) */
+    double          Aj;                     /* RuBP regen limited assimilation
+                                             * (umol m-2 s-1) */
+    double          A;                      /* final assimilation rate
+                                             * (umol m-2 s-1) */
 } psn_struct;
 
 /* CN summary structure */
 typedef struct summary_struct
 {
-    double          daily_npp;         /* = GPP - Rmaint - Rgrowth
-                                        * (kgC m-2 day-1) */
-    double          daily_nep;         /* = NPP - Rheterotroph (kgC m-2 day-1)
-                                        */
-    double          daily_nee;         /* = NEP - fire losses (kgC m-2 day-1) */
-    double          daily_gpp;         /* gross PSN source (kgC m-2 day-1) */
-    double          daily_mr;          /* maintenance respiration
-                                        * kgC m-2 day-1) */
-    double          daily_gr;          /* growth respiration (kgC m-2 day-1) */
-    double          daily_hr;          /* heterotrophic respiration
-                                        * kgC m-2 day-1) */
-    double          daily_fire;        /* fire losses (kgC m-2 day-1) */
-    double          daily_litfallc;    /* total litterfall (kgC m-2 day-1) */
+    double          daily_npp;              /* = GPP - Rmaint - Rgrowth
+                                             * (kgC m-2 day-1) */
+    double          daily_nep;              /* = NPP - Rheterotroph
+                                             * (kgC m-2 day-1) */
+    double          daily_nee;              /* = NEP - fire losses
+                                             * (kgC m-2 day-1) */
+    double          daily_gpp;              /* gross PSN source (kgC m-2 day-1)
+                                             */
+    double          daily_mr;               /* maintenance respiration
+                                             * (kgC m-2 day-1) */
+    double          daily_gr;               /* growth respiration
+                                             * (kgC m-2 day-1) */
+    double          daily_hr;               /* heterotrophic respiration
+                                             * (kgC m-2 day-1) */
+    double          daily_fire;             /* fire losses (kgC m-2 day-1) */
+    double          daily_litfallc;         /* total litterfall (kgC m-2 day-1)
+                                             */
     /* summed over entire simulation (kgC m-2) */
     double          cum_npp;
     double          cum_nep;
@@ -1615,74 +1559,126 @@ typedef struct summary_struct
     double          cum_gr;
     double          cum_hr;
     double          cum_fire;
-    double          vegc;              /* total vegetation C (kgC m-2) */
-    double          litrc;             /* total litter C (kgC m-2) */
-    double          soilc;             /* total soil C (kgC m-2) */
-    double          totalc;            /* total of vegc, litrc, and soilc
-                                        * (kgC m-2) */
+    double          vegc;                   /* total vegetation C (kgC m-2) */
+    double          agc;                    /* aboveground C (kgC m-2) */
+    double          litrc;                  /* total litter C (kgC m-2) */
+    double          soilc;                  /* total soil C (kgC m-2) */
+    double          totalc;                 /* total of vegc, litrc, and soilc
+                                             * (kgC m-2) */
 } summary_struct;
 
 /* Solute transport structure */
 typedef struct solute_struct
 {
-#if !defined(_LEACHING_)
-    double          conc_surf;            /* surface pool concentration
-                                           * (kg kgH2O-1) */
-#endif
-    double          conc_subsurf;         /* subsurface pool concentration
-                                           * (kg kgH2O-1) */
-#if !defined(_LEACHING_)
-    double          infilflux;            /* solute infiltration flux
-                                           * (kg m-2 s-1) */
-    double          ovlflux[NUM_EDGE];    /* overland solute flux (kg s-1) */
-#endif
-    double          subflux[NUM_EDGE];    /* subsurface solute flux (kg s-1) */
-    double          snksrc;               /* subsurface sink/source term
-                                           * (kg m-2 s-1) */
+# if !defined(_LEACHING_)
+    double          conc_surf;              /* surface pool concentration
+                                             * (kg kgH2O-1) */
+    double          infilflux;              /* solute infiltration flux
+                                             * (kg m-2 s-1) */
+    double          ovlflux[NUM_EDGE];      /* overland solute flux (kg s-1) */
+# endif
+    double          conc_subsurf;           /* subsurface pool concentration
+                                             * (kg kgH2O-1) */
+    double          subflux[NUM_EDGE];      /* subsurface solute flux (kg s-1)*/
+    double          snksrc;                 /* subsurface sink/source term
+                                             * (kg m-2 s-1) */
 } solute_struct;
 #endif
+
+#if defined(_RT_)
+typedef struct rtic_struct
+{
+    double          t_conc[MAXSPS];
+    double          ssa[MAXSPS];
+} rtic_struct;
+
+typedef struct prcpstate_struct
+{
+    double          t_conc[MAXSPS];         /* concentration (M kgH2O-1) */
+} prcpstate_struct;
+
+typedef struct chmstate_struct
+{
+    double          t_conc[MAXSPS];         /* concentration (M kgH2O-1) */
+    double          p_conc[MAXSPS];         /* primary concentration (M kgH2O-1)
+                                             */
+    double          s_conc[MAXSPS];         /* secondary concentration
+                                             * (M kgH2O-1) */
+    double          p_actv[MAXSPS];         /* activity of primary species */
+    double          ssa[MAXSPS];            /* specific surface area (m2 g-1) */
+    double          t_mole[MAXSPS];         /* total moles (M) */
+} chmstate_struct;
+
+typedef struct chmflux_struct
+{
+    double          infil[MAXSPS];          /* chemical flux from infiltration
+                                             * (M s-1) */
+    double          rechg[MAXSPS];          /* chemical flux from recharge
+                                             * (M s-1) */
+    double          subflux[NUM_EDGE][MAXSPS];/* chemical flux from subsurface
+                                             * lateral flux (M s-1) */
+    double          unsatflux[NUM_EDGE][MAXSPS];/* lateral chemical flux in
+                                             * unsaturated zone (M s-1) */
+    double          react_unsat[MAXSPS];    /* reaction flux in unsaturated zone
+                                             * (M s-1) */
+    double          react_gw[MAXSPS];       /* reaction flux in groundwater
+                                             * (M s-1) */
+# if defined(_FBR_)
+    double          fbr_infil[MAXSPS];      /* chemical flux from bedrock
+                                             * infiltration (M s-1) */
+    double          fbr_rechg[MAXSPS];      /* chemical flux from recharge to
+                                             * deep groundwater (M s-1) */
+    double          fbr_unsatflux[NUM_EDGE][MAXSPS];/* lateral chemical flux in
+                                             * bedrock unsaturated zone (M s-1)
+                                             */
+    double          fbrflow[NUM_EDGE][MAXSPS];/* lateral chemical flux in deep
+                                             * groundwater (M s-1) */
+    double          fbr_discharge[MAXSPS];  /* chemical flux from fractured
+                                             * bedrock to river (only applies to
+                                             * 2-grid model) (M s-1) */
+    double          react_fbrunsat[MAXSPS]; /* reaction flux in bedrock
+                                             * unsaturated zone (M s-1) */
+    double          react_fbrgw[MAXSPS];    /* reaction flux in deep groundwater
+                                             * (M s-1) */
+# endif
+} chmflux_struct;
+#endif
+
+/* Spinup variables */
+typedef struct spinup_struct
+{
+    double          totalw_prev;
+    double          totalw;
+#if defined(_BGC_)
+    double          soilc_prev;
+    double          totalc_prev;
+    double          soilc;
+    double          totalc;
+#endif
+} spinup_struct;
 
 /* Element structure */
 typedef struct elem_struct
 {
-    int             node[NUM_EDGE];    /* nodes of triangular element
-                                        * (counterclockwise) */
-    int             nabr[NUM_EDGE];    /* neighbor elements (neighbor i shares
-                                        * edge i (0: on boundary) */
-    int             ind;               /* index */
+    int             node[NUM_EDGE];         /* nodes of triangular element
+                                             * (counterclockwise) */
+    int             nabr[NUM_EDGE];         /* neighbor elements (neighbor i
+                                             * shares edge i (0: on boundary) */
+    int             nabr_river[NUM_EDGE];   /* adjacent river channel (0: no
+                                             * river on edge i) */
+    int             ind;                    /* index */
     attrib_struct   attrib;
     topo_struct     topo;
     soil_struct     soil;
     lc_struct       lc;
-#if defined(_FBR_)
-    geol_struct     geol;
-#endif
-    epconst_struct  epc;
     ic_struct       ic;
     bc_struct       bc;
-#if defined(_FBR_)
-    bc_struct       fbr_bc;
-#endif
     wstate_struct   ws;
     wstate_struct   ws0;
     wflux_struct    wf;
     estate_struct   es;
     eflux_struct    ef;
     pstate_struct   ps;
-#if defined(_DAILY_)
-    daily_struct    daily;
-#endif
-#if defined(_CYCLES_)
-    cropmgmt_struct cropmgmt;
-    comm_struct     comm;
-    residue_struct  residue;
-    soilc_struct    soilc;
-    weather_struct  weather;
-    snow_struct     snow;
-    solute_struct   NO3sol;
-    solute_struct   NH4sol;
-    cyclesic_struct cycles_restart;
-#endif
 #if defined(_BGC_)
     bgcic_struct    restart_input;
     bgcic_struct    restart_output;
@@ -1697,6 +1693,40 @@ typedef struct elem_struct
     epvar_struct    epv;
     solute_struct   nsol;
     spinup_struct   spinup;
+#endif
+#if defined(_CYCLES_)
+    crop_struct     crop[MAXCROP];
+    mgmt_struct     mgmt;
+    cyclesic_struct restart_input;
+    cstate_struct   cs;
+    cflux_struct    cf;
+    nstate_struct   ns;
+    nstate_struct   ns0;
+    nflux_struct    nf;
+    nprof_struct    np;
+    solute_struct   no3sol;
+    solute_struct   nh4sol;
+#else
+    epconst_struct  epc;
+#endif
+#if defined(_DAILY_)
+    daily_struct    daily;
+#endif
+#if defined(_FBR_)
+    geol_struct     geol;
+    bc_struct       fbr_bc;
+#endif
+#if defined(_RT_)
+    rtic_struct     restart_input[NCHMVOL];
+    rtic_struct     restart_output[NCHMVOL];
+    prcpstate_struct prcps;
+    chmstate_struct chms_unsat;
+    chmstate_struct chms_gw;
+# if defined(_FBR_)
+    chmstate_struct chms_fbrunsat;
+    chmstate_struct chms_fbrgw;
+# endif
+    chmflux_struct  chmf;
 #endif
 } elem_struct;
 #endif
