@@ -17,5 +17,5 @@ $ make biort-flux-pihm
 Run the example:
 
 ```shell
-./biort-flux-pihm ShaleHills_DOC
+$ ./biort-flux-pihm ShaleHills_DOC
 ```
