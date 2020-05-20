@@ -7,7 +7,7 @@ The reactive transport part of the code has been verified against the widely use
 
 This page is in the development stage. Detailed instructions and example files will be added over time. For now, readers are referred to Bao et al. (2017) for details of code structure, governing equations, and example runs, and to Li et al. (2017) and Wen et al. (2020) for particular applications in the Susquehanna Shale Hills Critical Zone Observatory (SSHCZO), one of the 10 national CZOs in the United States, and to Zhi et al., (2019) for its application in Coal Creek, CO, a high-elevation mountaineous watershed in the central Rocky mountains.
 
-For PIHM's other applications, see the page https://github.com/PSUmodeling/PIHM-Simulations
+For PIHM's diverse applications at other watersheds, see the page https://github.com/PSUmodeling/PIHM-Simulations
 
 #### Reference:
 - **Wen, H.**, Perdrial, J., Bernal, S., Abbott, B.W., Dupas, R., Godsey, S.E., Harpold, A., Rizzo, D., Underwood, K., Adler, T., Gary S., and Li L. (2020). Temperature controls production but hydrology controls export of dissolved organic carbon at the catchment scale. *Hydrology and Earch System Sciencea*, 24, 945–966. doi: 10.5194/hess-24-945-2020 
