@@ -14,9 +14,13 @@ For PIHM's diverse applications at other watersheds, see the page https://github
 
 - **Zhi, W.**, Li, L., Dong, W., Brown, W., Kaye, J., Steefel, C., Williams, H. K. (2019). Distinct Source Water Chemistry Shapes Contrasting Concentration - Discharge Patterns. *Water Resources Research*, 55, 4233–4251. doi: 10.1029/2018WR024257
 
-- **Wen, H.**, Perdrial, J., Bernal, S., Abbott, B.W., Dupas, R., Godsey, S.E., Harpold, A., Rizzo, D., Underwood, K., Adler, T., Gary S., and Li L. (2020). Temperature controls production but hydrology controls export of dissolved organic carbon at the catchment scale. *Hydrology and Earch System Sciencea*, 24, 945–966. doi: 10.5194/hess-24-945-2020 
+- **Wen, H.**, Perdrial, J., Bernal, S., Abbott, B.W., Dupas, R., Godsey, S.E., Harpold, A., Rizzo, D., Underwood, K., Adler, T., Gary S., and Li L. (2020). Temperature controls production but hydrology controls export of dissolved organic carbon at the catchment scale. *Hydrology and Earch System Sciencea*, 24, 945–966. doi: 10.5194/hess-24-945-2020
 
-- **Bao, C**., Li, L., Shi, Y., and Duffy, C. (2017). Understanding watershed hydrogeochemistry: 1. Development of RT‐Flux‐PIHM. *Water       Resources Research*, 53(3), 2328-2345. doi: 10.1002/2016WR018935
+- **Saberi, L.**, Crystal Ng, G., Nelson, L., Zhi, W., Li, L., La Frenierre, J., Johnstone, M. (2020, under review). Spatiotemporal Drivers of Hydrochemical Variability in a Tropical Glacierized Watershed in the Andes. doi: 10.1002/essoar.10502418.1
+
+- **Saberi, L.**, McLaughlin, R. T., Crystal Ng, G., La Frenierre, J., Wickert, A. D., Baraer, M., Zhi, W., Li, L., Mark, B. G.（2019). Multi-scale temporal variability in meltwater contributions in a tropical glacierized watershed. *Hydrology and Earth System Sciences*, 23, (1), 405-425. doi: 10.5194/hess-23-405-2019
+
+- **Bao, C**., Li, L., Shi, Y., and Duffy, C. (2017). Understanding watershed hydrogeochemistry: 1. Development of RT‐Flux‐PIHM. *Water Resources Research*, 53(3), 2328-2345. doi: 10.1002/2016WR018935
 
 - **Li, L.**, Bao, C., Sullivan, P. L., Brantley, S., Shi, Y., and Duffy, C. (2017). Understanding watershed hydrogeochemistry: 2. Synchronized hydrological and geochemical processes drive stream chemostatic behavior. *Water Resources Research*, 53(3), 2346-2367. doi: 10.1002/2016wr018935
 
