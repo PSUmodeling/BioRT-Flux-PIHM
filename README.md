@@ -105,6 +105,28 @@ Or to specify an output directory:
 ./biort-flux-pihm [-o directory] example
 ```
 
+### Running Examples
+For the spatially explict example of **ShaleHills_DOC**
+
+```shell
+$ make biort-flux-pihm
+```
+
+```shell
+$ ./biort-flux-pihm ShaleHills_DOC
+ ```
+ 
+For the two-grid example of **ShaleHillsDeep_nitrate**
+
+```shell
+$ make TGM=on DGW=on biort-flux-pihm
+```
+
+```shell
+$ ./biort-flux-pihm ShaleHillsDeep_nitrate
+ ```
+
+
 #### Using a PBS script
 If you use a PBS script, you must require the right number of ppn (processor cores per node) before setting the number of threads.
 The ppn should be the same as the number of threads you want to use.
